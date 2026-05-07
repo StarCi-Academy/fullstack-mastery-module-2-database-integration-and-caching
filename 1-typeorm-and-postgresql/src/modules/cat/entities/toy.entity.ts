@@ -10,21 +10,21 @@ import {
 } from "./cat.entity"
 
 /**
- * Toy Entity â€” Äáº¡i diá»‡n cho Ä‘á»“ chÆ¡i cá»§a mÃ¨o.
- * Nhiá»u Ä‘á»“ chÆ¡i cÃ³ thá»ƒ thuá»™c vá» cÃ¹ng má»™t con mÃ¨o (N:1).
+ * Toy Entity â€” Äáº¡i diá»‡n cho đồ chơi của mÃ¨o.
+ * Nhiá»u đồ chơi cÃ³ thể thuá»™c vá» cùng một con mÃ¨o (N:1).
  * (EN: Represents a cat's toy. Many toys can belong to the same cat (N:1).)
  */
 @Entity("toys")
 export class Toy {
   /**
-   * ID tá»± tÄƒng.
+   * ID tự tăng.
    * (EN: Auto-incremented ID.)
    */
   @PrimaryGeneratedColumn()
       id: number
 
   /**
-   * TÃªn Ä‘á»“ chÆ¡i.
+   * Tên đồ chơi.
    * (EN: Name of the toy.)
    */
   @Column()

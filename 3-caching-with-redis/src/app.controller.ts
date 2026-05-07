@@ -16,7 +16,7 @@ export class AppController {
    * (EN: GET / â€” Basic caching demo at root.)
    */
   @Get()
-  // Sá»­ dá»¥ng CacheInterceptor Ä‘á»ƒ cache response
+  // Sử dụng CacheInterceptor để cache response
   // (EN: Use CacheInterceptor to cache response)
   @UseInterceptors(CacheInterceptor)
   // Äáº·t tÃªn cache key
@@ -24,7 +24,7 @@ export class AppController {
   @CacheKey('home_cache')
   // Äáº·t thá»i gian cache
   // (EN: Set cache time)
-  @CacheTTL(60) // 60 giÃ¢y (EN: 60 seconds)
+  @CacheTTL(60) // 60 giây (EN: 60 seconds)
   // Tráº£ vá» response
   getHello(): string {
     return 'Hello Caching with Multi-tier Strategy (Memory + Redis)!';

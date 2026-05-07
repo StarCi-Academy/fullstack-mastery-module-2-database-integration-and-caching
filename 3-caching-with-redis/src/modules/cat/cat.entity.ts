@@ -5,7 +5,7 @@
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
 /**
- * Cat Entity â€” Thá»±c thá»ƒ minh há»a caching.
+ * Cat Entity â€” Thực thể minh há»a caching.
  * (EN: Cat Entity for caching demonstration.)
  */
 @Entity('cats')

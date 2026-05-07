@@ -7,7 +7,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { CatModule } from './modules/cat';
 
 /**
- * AppModule â€” Cáº¥u hÃ¬nh káº¿t ná»‘i MongoDB vÃ  quáº£n lÃ½ modules.
+ * AppModule â€” Cấu hình káº¿t ná»‘i MongoDB vÃ  quáº£n lÃ½ modules.
  * (EN: Configures MongoDB connection and manages modules.)
  */
 @Module({

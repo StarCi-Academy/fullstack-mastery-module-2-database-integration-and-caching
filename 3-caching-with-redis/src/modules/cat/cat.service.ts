@@ -43,37 +43,37 @@ export class CatService {
     @InjectRepository(Cat)
     private readonly catRepository: Repository<Cat>,
     private readonly dataSource: DataSource,
-    // Inject CACHE_MANAGER Ä‘á»ƒ thá»±c hiá»‡n manual caching báº±ng code logic
+    // Inject CACHE_MANAGER để thá»±c hiá»‡n manual caching báº±ng code logic
     // (EN: Inject CACHE_MANAGER for manual programmatic caching)
     @Inject(CACHE_MANAGER)
     private readonly cacheManager: Cache,
   ) {}
 
   /**
-   * LAYER 1: Database Query Cache (Táº§ng Database).
-   * DÃ¹ng TypeORM Ä‘á»ƒ cache láº¡i káº¿t quáº£ sau khi thá»±c thi SQL.
+   * LAYER 1: Database Query Cache (Tầng Database).
+   * DÃ¹ng TypeORM để cache lại kết quả sau khi thực thi SQL.
    * (EN: LAYER 1: Database Query Cache (Database layer). Uses TypeORM to cache SQL execution results.)
    */
   async findByDbCache(): Promise<Cat[]> {
     this.logger.log('Executing Layer 1: TypeORM Query Cache check...');
 
-    // [execute] DB query vá»›i tÃ¹y chá»n cache cá»§a TypeORM
+    // [execute] DB query vá»›i tÃ¹y chá»n cache của TypeORM
     // (EN: DB query with TypeORM cache option)
     return await this.catRepository.find({
       cache: {
         id: this.dbQueryCacheKey,
-        milliseconds: 30000, // Cache trong 30 giÃ¢y (EN: 30s cache)
+        milliseconds: 30000, // Cache trong 30 giây (EN: 30s cache)
       },
     });
   }
 
   /**
-   * LAYER 2: Cache By Logic (Táº§ng Nghiá»‡p vá»¥).
-   * Tá»± viáº¿t code Ä‘á»ƒ kiá»ƒm tra cache trÆ°á»›c khi thá»±c hiá»‡n logic náº·ng.
+   * LAYER 2: Cache By Logic (Tầng Nghiá»‡p vá»¥).
+   * Tá»± viáº¿t code để kiểm tra cache trước khi thá»±c hiá»‡n logic nặng.
    * (EN: LAYER 2: Cache By Logic (Business layer). Manually check cache before heavy logic.)
    */
   async findByLogicCache(): Promise<{ message: string; timestamp: string }> {
-    // [prepare] Kiá»ƒm tra xem dá»¯ liá»‡u Ä‘Ã£ cÃ³ trong cache chÆ°a
+    // [prepare] Kiá»ƒm tra xem dữ liệu đã có trong cache chưa
     // (EN: Check if data already exists in cache)
     this.logger.log('Executing Layer 2: Programmatic Logic Cache check...');
     const cachedData = await this.cacheManager.get(this.logicCacheKey);
@@ -83,15 +83,15 @@ export class CatService {
       return cachedData;
     }
 
-    // [execute] Giáº£ láº­p xá»­ lÃ½ nghiá»‡p vá»¥ náº·ng (EN: Simulate heavy business logic)
+    // [execute] Giả lập xử lý nghiệp vụ nặng (EN: Simulate heavy business logic)
     this.logger.warn('Logic Cache Miss! Simulating heavy work for 1 second...');
     await this.sleep(1000); // Sleep 1s
     const result = {
-      message: 'Háº£i sáº£n cho mÃ¨o cá»±c pháº©m',
+      message: 'Hải sản cho mÃ¨o cực phẩm',
       timestamp: new Date().toISOString(),
     };
 
-    // [confirm] LÆ°u káº¿t quáº£ vÃ o cache Ä‘á»… dÃ¹ng cho láº§n sau
+    // [confirm] Lưu kết quả vÃ o cache Ä‘á»… dùng cho lần sau
     // (EN: Save result to cache for future use)
     await this.cacheManager.set(this.logicCacheKey, result, 60000); // 1 phÃºt (EN: 1 minute)
 
@@ -99,8 +99,8 @@ export class CatService {
   }
 
   /**
-   * LAYER 3: Response Cache (Táº§ng Tiáº¿p nháº­n).
-   * Táº§ng nÃ y thÆ°á»ng Ä‘Æ°á»£c handle á»Ÿ Controller, service chá»‰ tráº£ vá» data thÃ´.
+   * LAYER 3: Response Cache (Tầng Tiáº¿p nháº­n).
+   * Tầng nÃ y thÆ°á»ng được handle á»Ÿ Controller, service chá»‰ tráº£ vá» data thô.
    * (EN: LAYER 3: Response Cache (Entry layer). Usually handled at Controller; service just returns raw data.)
    */
   findForResponseCache(): string {
@@ -112,7 +112,7 @@ export class CatService {
   }
 
   /**
-   * LAYER 3 helper: mÃ´ phá»ng tÃ¡c vá»¥ náº·ng 1 giÃ¢y cho láº§n cache miss.
+   * LAYER 3 helper: mÃ´ phá»ng tác vụ nặng 1 giây cho láº§n cache miss.
    * (EN: Simulates 1-second heavy work for response-layer cache miss.)
    */
   async findForResponseCacheWithDelay(): Promise<string> {
@@ -124,7 +124,7 @@ export class CatService {
   }
 
   /**
-   * XÃ³a key cache cá»§a táº§ng response Ä‘á»ƒ demo láº¡i miss/hit.
+   * Xóa key cache của táº§ng response để demo lại miss/hit.
    * (EN: Clears response-layer cache key to replay miss/hit demo.)
    */
   async clearResponseLayerCache(): Promise<{
@@ -140,7 +140,7 @@ export class CatService {
   }
 
   /**
-   * XÃ³a key cache cá»§a táº§ng logic Ä‘á»ƒ thá»­ láº¡i luá»“ng miss/hit.
+   * Xóa key cache của táº§ng logic để thử lại luồng miss/hit.
    * (EN: Clears logic-layer cache key to replay miss/hit.)
    */
   async clearLogicLayerCache(): Promise<{
@@ -156,7 +156,7 @@ export class CatService {
   }
 
   /**
-   * XÃ³a query cache cá»§a TypeORM Ä‘á»ƒ thá»­ láº¡i luá»“ng DB cache.
+   * Xóa query cache của TypeORM để thử lại luồng DB cache.
    * (EN: Clears TypeORM query cache key to replay DB-layer cache flow.)
    */
   async clearDbLayerCache(): Promise<{
@@ -175,7 +175,7 @@ export class CatService {
   }
 
   /**
-   * Seed nhanh dá»¯ liá»‡u cat Ä‘á»ƒ demo caching vá»›i táº­p dá»¯ liá»‡u lá»›n.
+   * Seed nhanh dữ liệu cat để demo caching vá»›i tập dữ liệu lớn.
    * (EN: Quickly seeds cat data for large-dataset caching demo.)
    */
   async seedCats(count = 1000): Promise<{

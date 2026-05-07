@@ -16,7 +16,7 @@ import { CacheInterceptor, CacheKey, CacheTTL } from '@nestjs/cache-manager';
 import { CatService } from './cat.service';
 
 /**
- * Cat Controller â€” TrÃ¬nh diá»…n 3 táº§ng caching qua 3 endpoints khÃ¡c nhau.
+ * Cat Controller â€” Trình diễn 3 táº§ng caching qua 3 endpoints khác nhau.
  * (EN: Cat Controller â€” Demonstrates 3 caching layers through 3 different endpoints.)
  */
 @Controller('cats')
@@ -26,7 +26,7 @@ export class CatController {
   constructor(private readonly catService: CatService) {}
 
   /**
-   * POST /cats/seed?count=1000 â€” Seed nhanh dá»¯ liá»‡u báº±ng faker.
+   * POST /cats/seed?count=1000 â€” Seed nhanh dữ liệu báº±ng faker.
    * (EN: POST /cats/seed?count=1000 â€” Quick faker-based seed endpoint.)
    */
   @Post('seed')
@@ -47,23 +47,23 @@ export class CatController {
 
   /**
    * ENDPOINT 1: Demo Response Cache (Request Level).
-   * Tá»± Ä‘á»™ng cache toÃ n bá»™ HTTP Response dá»±a trÃªn URL vÃ  Key.
+   * Tá»± Ä‘á»™ng cache toÃ n bá»™ HTTP Response dựa trên URL vÃ  Key.
    * (EN: ENDPOINT 1: Demo Response Cache (Request Level). Auto-caches HTTP Response based on URL and Key.)
    */
   @Get('response-layer')
   // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-  @UseInterceptors(CacheInterceptor) // Táº§ng 3: Cháº·n ngay táº¡i entry point (EN: Block at entry point)
+  @UseInterceptors(CacheInterceptor) // Tầng 3: Cháº·n ngay táº¡i entry point (EN: Block at entry point)
   // eslint-disable-next-line @typescript-eslint/no-unsafe-call
   @CacheKey('cats_res_layer')
   // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-  @CacheTTL(30000) // 30 giÃ¢y (EN: 30 seconds)
+  @CacheTTL(30000) // 30 giây (EN: 30 seconds)
   async getResponseCache(): Promise<string> {
     this.logger.log('--- Triggering Layer 3 (Response Cache) flow ---');
     return await this.catService.findForResponseCacheWithDelay();
   }
 
   /**
-   * DELETE /cats/response-layer/cache â€” XÃ³a key cache táº§ng controller.
+   * DELETE /cats/response-layer/cache â€” Xóa key cache táº§ng controller.
    * (EN: DELETE /cats/response-layer/cache â€” Clear response-layer cache key.)
    */
   @Delete('response-layer/cache')
@@ -77,7 +77,7 @@ export class CatController {
 
   /**
    * ENDPOINT 2: Demo Logic Cache (Service Level).
-   * Service chá»§ Ä‘á»™ng kiá»ƒm tra cache báº±ng code trÆ°á»›c khi tÃ­nh toÃ¡n.
+   * Service chủ động kiểm tra cache báº±ng code trước khi tính toán.
    * (EN: ENDPOINT 2: Demo Logic Cache (Service Level). Service manually checks cache before computing.)
    */
   @Get('logic-layer')
@@ -87,7 +87,7 @@ export class CatController {
   }
 
   /**
-   * DELETE /cats/logic-layer/cache â€” XÃ³a key cache táº§ng logic.
+   * DELETE /cats/logic-layer/cache â€” Xóa key cache táº§ng logic.
    * (EN: DELETE /cats/logic-layer/cache â€” Clear logic-layer cache key.)
    */
   @Delete('logic-layer/cache')
@@ -101,7 +101,7 @@ export class CatController {
 
   /**
    * ENDPOINT 3: Demo DB Query Cache (Data Level).
-   * TypeORM tá»± Ä‘á»™ng cache káº¿t quáº£ cá»§a cÃ¢u lá»‡nh SQL.
+   * TypeORM tự động cache kết quả của câu lệnh SQL.
    * (EN: ENDPOINT 3: Demo DB Query Cache (Data Level). TypeORM auto-caches SQL query results.)
    */
   @Get('db-layer')
@@ -111,7 +111,7 @@ export class CatController {
   }
 
   /**
-   * DELETE /cats/db-layer/cache â€” XÃ³a key query cache táº§ng DB.
+   * DELETE /cats/db-layer/cache â€” Xóa key query cache táº§ng DB.
    * (EN: DELETE /cats/db-layer/cache â€” Clear DB query-layer cache key.)
    */
   @Delete('db-layer/cache')

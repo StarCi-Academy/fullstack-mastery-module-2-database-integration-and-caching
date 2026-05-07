@@ -42,7 +42,7 @@ export class CatController {
   }
 
   /**
-   * PUT /cats/:id â€” Cáº­p nháº­t thÃ´ng tin mÃ¨o.
+   * PUT /cats/:id â€” Cáº­p nháº­t thông tin mÃ¨o.
    * (EN: PUT /cats/:id â€” Update cat details.)
    */
   @Put(':id')

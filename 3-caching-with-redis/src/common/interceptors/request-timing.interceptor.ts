@@ -11,7 +11,7 @@ import {
 import { Observable, tap } from 'rxjs';
 
 /**
- * RequestTimingInterceptor â€” Äo thá»i gian xá»­ lÃ½ request vÃ  in console.
+ * RequestTimingInterceptor â€” Äo thá»i gian xử lý request vÃ  in console.
  * (EN: Measures request duration and prints it to console.)
  */
 @Injectable()

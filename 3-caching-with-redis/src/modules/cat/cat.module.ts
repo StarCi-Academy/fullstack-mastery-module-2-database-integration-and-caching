@@ -9,7 +9,7 @@ import { CatService } from './cat.service';
 import { CatController } from './cat.controller';
 
 /**
- * Cat Module â€” ÄÄƒng kÃ½ entity vÃ  bá»™ xá»­ lÃ½ logic cho mÃ¨o.
+ * Cat Module â€” ÄÄƒng kÃ½ entity vÃ  bá»™ xử lý logic cho mÃ¨o.
  * (EN: Cat Module â€” Registers entity and business logic for cats.)
  */
 @Module({

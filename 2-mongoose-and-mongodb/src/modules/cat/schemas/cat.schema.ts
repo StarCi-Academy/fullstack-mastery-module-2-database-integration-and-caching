@@ -6,7 +6,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
 
 /**
- * Cat Document â€” Kiá»ƒu dá»¯ liá»‡u Ä‘Æ°á»£c hydrate tá»« database.
+ * Cat Document â€” Kiá»ƒu dữ liệu được hydrate tá»« database.
  * (EN: Hydrated document type from the database.)
  */
 export type CatDocument = HydratedDocument<Cat>;
@@ -19,19 +19,19 @@ export type CatDocument = HydratedDocument<Cat>;
 @Schema({
   // Tá»± Ä‘á»™ng thÃªm createdAt vÃ  updatedAt (EN: Auto-adds createdAt and updatedAt)
   timestamps: true,
-  // TÃªn collection trong DB (EN: Collection name in DB)
+  // Tên collection trong DB (EN: Collection name in DB)
   collection: 'cats',
 })
 export class Cat {
   /**
-   * TÃªn cá»§a mÃ¨o.
+   * Tên của mÃ¨o.
    * (EN: Name of the cat.)
    */
   @Prop({ required: true, index: true })
   name: string;
 
   /**
-   * Tuá»•i cá»§a mÃ¨o.
+   * Tuá»•i của mÃ¨o.
    * (EN: Age of the cat.)
    */
   @Prop({ required: true, min: 0 })

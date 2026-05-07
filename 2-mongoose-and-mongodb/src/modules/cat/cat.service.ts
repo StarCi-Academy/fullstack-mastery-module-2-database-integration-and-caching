@@ -8,7 +8,7 @@ import { Model } from 'mongoose';
 import { Cat, CatDocument } from './schemas/cat.schema';
 
 /**
- * Cat Service â€” Xá»­ lÃ½ logic nghiá»‡p vá»¥ cho mÃ¨o báº±ng Mongoose.
+ * Cat Service â€” Xá»­ lÃ½ logic nghiệp vụ cho mÃ¨o báº±ng Mongoose.
  * (EN: Business logic service for cats using Mongoose.)
  */
 @Injectable()
@@ -24,15 +24,15 @@ export class CatService {
    * Táº¡o mÃ¨o má»›i. (EN: Creates a new cat.)
    *
    * @param catData - Dá»¯ liá»‡u mÃ¨o (EN: cat data)
-   * @returns Promise<Cat> - MÃ¨o vá»«a Ä‘Æ°á»£c táº¡o (EN: newly created cat)
+   * @returns Promise<Cat> - MÃ¨o vá»«a được táº¡o (EN: newly created cat)
    */
   async create(catData: Partial<Cat>): Promise<Cat> {
-    // [prepare] Khá»Ÿi táº¡o instance má»›i tá»« model
+    // [prepare] Khởi tạo instance má»›i tá»« model
     // (EN: Prepare new instance from model)
     this.logger.log({ message: 'Preparing to create new cat', data: catData });
     const createdCat = new this.catModel(catData);
 
-    // [execute] LÆ°u vÃ o MongoDB (EN: Execute save to MongoDB)
+    // [execute] Lưu vÃ o MongoDB (EN: Execute save to MongoDB)
     const savedCat = await createdCat.save();
 
     // [confirm] Tráº£ vá» vÃ  log thÃ nh cÃ´ng (EN: Confirm and log success)
@@ -77,10 +77,10 @@ export class CatService {
   }
 
   /**
-   * Cáº­p nháº­t thÃ´ng tin mÃ¨o theo ID. (EN: Updates cat by ID.)
+   * Cáº­p nháº­t thông tin mÃ¨o theo ID. (EN: Updates cat by ID.)
    */
   async update(id: string, updateData: Partial<Cat>): Promise<Cat> {
-    // [execute] findByIdAndUpdate: { new: true } Ä‘á»ƒ tráº£ vá» báº£n ghi sau khi update
+    // [execute] findByIdAndUpdate: { new: true } để tráº£ vá» báº£n ghi sau khi update
     // (EN: findByIdAndUpdate: { new: true } to return the record after update)
     const updatedCat = await this.catModel
       .findByIdAndUpdate(id, updateData, { returnDocument: 'after' })

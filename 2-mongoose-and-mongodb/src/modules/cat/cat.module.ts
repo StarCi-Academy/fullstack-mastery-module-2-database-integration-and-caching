@@ -9,7 +9,7 @@ import { CatService } from './cat.service';
 import { CatController } from './cat.controller';
 
 /**
- * Cat Module â€” Káº¿t ná»‘i Schema vÃ  cÃ¡c thÃ nh pháº§n xá»­ lÃ½ cá»§a Cat.
+ * Cat Module â€” Káº¿t ná»‘i Schema vÃ  cÃ¡c thÃ nh pháº§n xử lý của Cat.
  * (EN: Connects Schema and processing components for Cat.)
  */
 @Module({

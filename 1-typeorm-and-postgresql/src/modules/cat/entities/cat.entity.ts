@@ -23,21 +23,21 @@ import {
 } from "./owner.entity"
 
 /**
- * Cat Entity â€” Thá»±c thá»ƒ chÃ­nh Ä‘áº¡i diá»‡n cho mÃ¨o.
- * Minh há»a Ä‘áº§y Ä‘á»§ cÃ¡c loáº¡i quan há»‡ trong TypeORM.
+ * Cat Entity â€” Thực thể chÃ­nh Ä‘áº¡i diá»‡n cho mÃ¨o.
+ * Minh há»a đầy đủ cÃ¡c loại quan hệ trong TypeORM.
  * (EN: Main entity representing a cat. Illustrates all types of relationships in TypeORM.)
  */
 @Entity("cats")
 export class Cat {
   /**
-   * ID tá»± tÄƒng.
+   * ID tự tăng.
    * (EN: Auto-incremented ID.)
    */
   @PrimaryGeneratedColumn()
       id: number
 
   /**
-   * TÃªn con mÃ¨o.
+   * Tên con mÃ¨o.
    * (EN: Name of the cat.)
    */
   @Column()
@@ -45,7 +45,7 @@ export class Cat {
 
   /**
    * Quan há»‡ 1:1 vá»›i CatPassport.
-   * @JoinColumn cho biáº¿t quan há»‡ nÃ y sá»Ÿ há»¯u khÃ³a ngoáº¡i (foreign key).
+   * @JoinColumn cho biáº¿t quan há»‡ nÃ y sở hữu khóa ngoại (foreign key).
    * (EN: 1:1 relationship with CatPassport. @JoinColumn indicates this side owns the foreign key.)
    */
   @OneToOne(() => CatPassport,
@@ -58,7 +58,7 @@ export class Cat {
 
   /**
    * Quan há»‡ 1:N vá»›i Toy.
-   * Má»™t con mÃ¨o cÃ³ thá»ƒ cÃ³ danh sÃ¡ch Ä‘á»“ chÆ¡i.
+   * Má»™t con mÃ¨o cÃ³ thể cÃ³ danh sÃ¡ch đồ chơi.
    * (EN: 1:N relationship with Toy. A cat can have a list of toys.)
    */
   @OneToMany(() => Toy,
@@ -70,7 +70,7 @@ export class Cat {
 
   /**
    * Quan há»‡ N:N vá»›i Owner.
-   * @JoinTable cáº§n thiáº¿t á»Ÿ má»™t phÃ­a cá»§a quan há»‡ N:N.
+   * @JoinTable cáº§n thiáº¿t á»Ÿ má»™t phÃ­a của quan há»‡ N:N.
    * (EN: N:N relationship with Owner. @JoinTable is required on one side of the N:N relation.)
    */
   @ManyToMany(() => Owner,

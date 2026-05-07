@@ -10,21 +10,21 @@ import {
 } from "./cat.entity"
 
 /**
- * Owner Entity â€” Äáº¡i diá»‡n cho ngÆ°á»i chá»§ cá»§a mÃ¨o.
- * Má»™t ngÆ°á»i chá»§ cÃ³ thá»ƒ cÃ³ nhiá»u mÃ¨o, vÃ  má»™t con mÃ¨o cÃ³ thá»ƒ cÃ³ nhiá»u chá»§ (N:N).
+ * Owner Entity â€” Äáº¡i diá»‡n cho ngÆ°á»i chá»§ của mÃ¨o.
+ * Má»™t ngÆ°á»i chá»§ cÃ³ thể cÃ³ nhiá»u mÃ¨o, vÃ  má»™t con mÃ¨o cÃ³ thể cÃ³ nhiá»u chá»§ (N:N).
  * (EN: Represents the owner of a cat. An owner can have many cats, and a cat can have many owners (N:N).)
  */
 @Entity("owners")
 export class Owner {
   /**
-   * ID tá»± tÄƒng cá»§a ngÆ°á»i chá»§.
+   * ID tự tăng của ngÆ°á»i chá»§.
    * (EN: Auto-incremented ID of the owner.)
    */
   @PrimaryGeneratedColumn()
       id: number
 
   /**
-   * TÃªn cá»§a ngÆ°á»i chá»§.
+   * Tên của ngÆ°á»i chá»§.
    * (EN: Name of the owner.)
    */
   @Column()
