@@ -12,6 +12,12 @@ import {
     CacheModule 
 } from "@nestjs/cache-manager"
 import {
+    ConfigModule 
+} from "@nestjs/config"
+import {
+    databaseConfig, DatabaseConfig 
+} from "./config"
+import {
     APP_INTERCEPTOR 
 } from "@nestjs/core"
 import KeyvRedis from "@keyv/redis"
@@ -37,16 +43,21 @@ import {
  */
 @Module({
     imports: [
-    // [Layer 2 & 3] Khởi tạo CacheModule với đa tầng (Multi-tier)
-    // Tầng 1: Redis, Tầng 2: Local Memory
-    // (EN: [Layer 2 & 3] Initialize multi-tier CacheModule. L1: Redis, L2: Local Memory.)
+        ConfigModule.forRoot({
+            isGlobal: true,
+            load: [databaseConfig],
+        }),
+        // [Layer 2 & 3] Khởi tạo CacheModule với đa tầng (Multi-tier)
+        // Tầng 1: Redis, Tầng 2: Local Memory
+        // (EN: [Layer 2 & 3] Initialize multi-tier CacheModule. L1: Redis, L2: Local Memory.)
         CacheModule.registerAsync({
-            isGlobal: true, // Quan trá»ng: Cho phép Inject CACHE_MANAGER vÃ o service layer
-            useFactory: async () => {
+            isGlobal: true, // Quan trọng: Cho phép Inject CACHE_MANAGER vào service layer
+            inject: [databaseConfig.KEY],
+            useFactory: async (dbConfig: DatabaseConfig) => {
                 return {
                     stores: [
                         // Ưu tiên Redis cho data chia sẻ (EN: Prioritize Redis for shared data)
-                        new KeyvRedis("redis://localhost:6379"),
+                        new KeyvRedis(dbConfig.redis.uri),
                         // Fallback memcache nếu cần (EN: Fallback memcache)
                         new Keyv({
                             store: new CacheableMemory({
@@ -59,22 +70,25 @@ import {
         }),
 
         // [Layer 1] Cấu hình TypeORM Query Cache (EN: TypeORM Query Cache setup)
-        TypeOrmModule.forRoot({
-            type: "postgres",
-            host: "localhost",
-            port: 5432,
-            username: "postgres",
-            password: "postgres",
-            database: "demo",
-            entities: [Cat],
-            synchronize: true,
-            cache: {
-                type: "ioredis",
-                options: {
-                    host: "localhost",
-                    port: 6379,
+        TypeOrmModule.forRootAsync({
+            inject: [databaseConfig.KEY],
+            useFactory: (dbConfig: DatabaseConfig) => ({
+                type: "postgres",
+                host: dbConfig.postgres.host,
+                port: dbConfig.postgres.port,
+                username: dbConfig.postgres.username,
+                password: dbConfig.postgres.password,
+                database: dbConfig.postgres.database,
+                entities: [Cat],
+                synchronize: true,
+                cache: {
+                    type: "ioredis",
+                    options: {
+                        host: new URL(dbConfig.redis.uri).hostname,
+                        port: Number(new URL(dbConfig.redis.uri).port) || 6379,
+                    },
                 },
-            },
+            }),
         }),
 
         // Domain modules

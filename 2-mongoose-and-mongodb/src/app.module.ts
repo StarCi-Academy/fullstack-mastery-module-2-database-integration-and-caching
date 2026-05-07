@@ -9,6 +9,12 @@ import {
     MongooseModule 
 } from "@nestjs/mongoose"
 import {
+    ConfigModule 
+} from "@nestjs/config"
+import {
+    databaseConfig, DatabaseConfig 
+} from "./config"
+import {
     CatModule 
 } from "./modules"
 
@@ -18,11 +24,18 @@ import {
  */
 @Module({
     imports: [
-    // Kết nối MongoDB với URI từ Docker config
-    // (EN: MongoDB connection with URI from Docker config)
-        MongooseModule.forRoot(
-            "mongodb://starci_admin:starci_password@localhost:27017/starci_db?authSource=admin",
-        ),
+        ConfigModule.forRoot({
+            isGlobal: true,
+            load: [databaseConfig],
+        }),
+        // Kết nối MongoDB với URI từ Docker config
+        // (EN: MongoDB connection with URI from Docker config)
+        MongooseModule.forRootAsync({
+            inject: [databaseConfig.KEY],
+            useFactory: (dbConfig: DatabaseConfig) => ({
+                uri: dbConfig.mongo.uri,
+            }),
+        }),
 
         // Feature Modules
         CatModule,

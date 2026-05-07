@@ -12,6 +12,12 @@ import {
     TypeOrmModule,
 } from "@nestjs/typeorm"
 import {
+    ConfigModule,
+} from "@nestjs/config"
+import {
+    databaseConfig, DatabaseConfig,
+} from "./config"
+import {
     AppController,
 } from "./app.controller"
 import {
@@ -24,24 +30,33 @@ import {
 
 @Module({
     imports: [
+        ConfigModule.forRoot({
+            isGlobal: true,
+            load: [databaseConfig],
+        }),
         // Kết nối PostgreSQL cho nhánh SQL (TypeORM).
         // (EN: PostgreSQL connection for SQL branch (TypeORM).)
-        TypeOrmModule.forRoot({
-            type: "postgres",
-            host: process.env.PG_HOST ?? "localhost",
-            port: Number(process.env.PG_PORT ?? 5432),
-            username: process.env.PG_USER ?? "starci_user",
-            password: process.env.PG_PASSWORD ?? "starci_password",
-            database: process.env.PG_DATABASE ?? "starci_sql_db",
-            entities: [SqlComparisonItemEntity],
-            synchronize: true,
+        TypeOrmModule.forRootAsync({
+            inject: [databaseConfig.KEY],
+            useFactory: (dbConfig: DatabaseConfig) => ({
+                type: "postgres",
+                host: dbConfig.postgres.host,
+                port: dbConfig.postgres.port,
+                username: dbConfig.postgres.username,
+                password: dbConfig.postgres.password,
+                database: dbConfig.postgres.database,
+                entities: [SqlComparisonItemEntity],
+                synchronize: true,
+            }),
         }),
         // Kết nối MongoDB cho nhánh NoSQL (Mongoose).
         // (EN: MongoDB connection for NoSQL branch (Mongoose).)
-        MongooseModule.forRoot(
-            process.env.MONGO_URI ??
-            "mongodb://starci_admin:starci_password@localhost:27017/starci_nosql_db?authSource=admin",
-        ),
+        MongooseModule.forRootAsync({
+            inject: [databaseConfig.KEY],
+            useFactory: (dbConfig: DatabaseConfig) => ({
+                uri: dbConfig.mongo.uri,
+            }),
+        }),
         CompareModule,
     ],
     controllers: [AppController],

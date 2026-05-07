@@ -9,6 +9,12 @@ import {
     TypeOrmModule,
 } from "@nestjs/typeorm"
 import {
+    ConfigModule,
+} from "@nestjs/config"
+import {
+    databaseConfig, DatabaseConfig,
+} from "./config"
+import {
     Cat,
     CatPassport,
     Toy,
@@ -18,24 +24,31 @@ import {
 
 @Module({
     imports: [
+        ConfigModule.forRoot({
+            isGlobal: true,
+            load: [databaseConfig],
+        }),
         // Cấu hình kết nối PostgreSQL tập trung.
         // (EN: Centralized PostgreSQL connection config.)
-        TypeOrmModule.forRoot({
-            type: "postgres",
-            host: "localhost",
-            port: 5432,
-            username: "postgres",
-            password: "postgres",
-            database: "demo",
-            // Tự động load các entities được khai báo.
-            // (EN: Auto-load declared entities.)
-            entities: [Cat,
-                CatPassport,
-                Toy,
-                Owner],
-            // [QUAN TRỌNG] Tự động đồng bộ schema — không dùng cho production!
-            // (EN: [IMPORTANT] Auto-sync database schema — do not use in production!)
-            synchronize: true,
+        TypeOrmModule.forRootAsync({
+            inject: [databaseConfig.KEY],
+            useFactory: (dbConfig: DatabaseConfig) => ({
+                type: "postgres",
+                host: dbConfig.postgres.host,
+                port: dbConfig.postgres.port,
+                username: dbConfig.postgres.username,
+                password: dbConfig.postgres.password,
+                database: dbConfig.postgres.database,
+                // Tự động load các entities được khai báo.
+                // (EN: Auto-load declared entities.)
+                entities: [Cat,
+                    CatPassport,
+                    Toy,
+                    Owner],
+                // [QUAN TRỌNG] Tự động đồng bộ schema — không dùng cho production!
+                // (EN: [IMPORTANT] Auto-sync database schema — do not use in production!)
+                synchronize: true,
+            }),
         }),
         CatModule,
     ],
