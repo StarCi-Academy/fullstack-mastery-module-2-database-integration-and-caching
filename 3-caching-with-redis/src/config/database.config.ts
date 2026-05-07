@@ -10,9 +10,6 @@ export interface DatabaseConfig {
         password: string
         database: string
     }
-    mongo: {
-        uri: string
-    }
     redis: {
         uri: string
     }
@@ -26,9 +23,6 @@ export const databaseConfig = registerAs("database",
             username: process.env.POSTGRES_USER ?? "postgres",
             password: process.env.POSTGRES_PASSWORD ?? "postgres",
             database: process.env.POSTGRES_DB ?? "demo",
-        },
-        mongo: {
-            uri: process.env.MONGO_URI ?? "mongodb://starci_admin:starci_password@localhost:27017/starci_db?authSource=admin",
         },
         redis: {
             uri: process.env.REDIS_URI ?? "redis://localhost:6379",
