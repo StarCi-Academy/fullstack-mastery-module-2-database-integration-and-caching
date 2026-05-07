@@ -24,9 +24,9 @@ import {
             type: "postgres",
             host: "localhost",
             port: 5432,
-            username: "starci_user",
-            password: "starci_password",
-            database: "starci_db",
+            username: "postgres",
+            password: "postgres",
+            database: "demo",
             // Tự động load các entities được khai báo.
             // (EN: Auto-load declared entities.)
             entities: [Cat, CatPassport, Toy, Owner],
