@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Service xu ly logic nghiep vu cua Cat.
  * (EN: Business logic service for Cat.)
  */
@@ -83,7 +83,7 @@ export class CatService {
     // [execute] findByIdAndUpdate: { new: true } Ä‘á»ƒ tráº£ vá» báº£n ghi sau khi update
     // (EN: findByIdAndUpdate: { new: true } to return the record after update)
     const updatedCat = await this.catModel
-      .findByIdAndUpdate(id, updateData, { new: true })
+      .findByIdAndUpdate(id, updateData, { returnDocument: 'after' })
       .exec();
 
     if (!updatedCat) {
