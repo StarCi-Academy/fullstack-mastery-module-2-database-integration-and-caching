@@ -44,7 +44,8 @@ export class CompareService {
     async write(dto: CreateCompareDto) {
         // Lưu song song để giảm độ trễ và giữ cùng thời điểm test giữa 2 storage.
         // (EN: Save in parallel to reduce latency and keep comparison timing consistent.)
-        const [sqlRecord, noSqlRecord] = await Promise.all([
+        const [sqlRecord,
+            noSqlRecord] = await Promise.all([
             this.sqlRepository.save(this.sqlRepository.create(dto)),
             this.noSqlModel.create(dto),
         ])
@@ -75,14 +76,19 @@ export class CompareService {
     async read() {
         // Giới hạn 20 bản ghi để endpoint luôn nhẹ và dễ smoke test.
         // (EN: Limit to 20 records to keep endpoint lightweight for smoke tests.)
-        const [sqlItems, noSqlItems] = await Promise.all([
+        const [sqlItems,
+            noSqlItems] = await Promise.all([
             this.sqlRepository.find({
-                order: { createdAt: "DESC" },
+                order: {
+                    createdAt: "DESC" 
+                },
                 take: 20,
             }),
             this.noSqlModel
                 .find()
-                .sort({ createdAt: -1 })
+                .sort({
+                    createdAt: -1 
+                })
                 .limit(20)
                 .lean(),
         ])

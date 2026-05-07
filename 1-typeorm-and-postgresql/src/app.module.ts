@@ -29,7 +29,10 @@ import {
             database: "demo",
             // Tự động load các entities được khai báo.
             // (EN: Auto-load declared entities.)
-            entities: [Cat, CatPassport, Toy, Owner],
+            entities: [Cat,
+                CatPassport,
+                Toy,
+                Owner],
             // [QUAN TRỌNG] Tự động đồng bộ schema — không dùng cho production!
             // (EN: [IMPORTANT] Auto-sync database schema — do not use in production!)
             synchronize: true,

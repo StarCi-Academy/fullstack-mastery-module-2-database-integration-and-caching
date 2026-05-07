@@ -1,1 +1,1 @@
-export * from './cat.schema';
+export * from "./cat.schema"

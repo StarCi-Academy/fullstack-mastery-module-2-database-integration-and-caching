@@ -2,23 +2,35 @@
  * CatModule — dang ky cac thanh phan cua feature Cat.
  * (EN: CatModule — registers components for Cat feature.)
  */
-import { Module } from '@nestjs/common';
-import { MongooseModule } from '@nestjs/mongoose';
-import { Cat, CatSchema } from './schemas/cat.schema';
-import { CatService } from './cat.service';
-import { CatController } from './cat.controller';
+import {
+    Module 
+} from "@nestjs/common"
+import {
+    MongooseModule 
+} from "@nestjs/mongoose"
+import {
+    Cat, CatSchema 
+} from "./schemas/cat.schema"
+import {
+    CatService 
+} from "./cat.service"
+import {
+    CatController 
+} from "./cat.controller"
 
 /**
- * Cat Module â€” Káº¿t ná»‘i Schema vÃ  cÃ¡c thÃ nh pháº§n xử lý của Cat.
+ * Cat Module â€” Káº¿t ná»‘i Schema vÃ  cÃ¡c thÃ nh pháº§n xử lý của Cat.
  * (EN: Connects Schema and processing components for Cat.)
  */
 @Module({
-  imports: [
-    // ÄÄƒng kÃ½ Model vÃ o MongooseModule (EN: Register Model into MongooseModule)
-    MongooseModule.forFeature([{ name: Cat.name, schema: CatSchema }]),
-  ],
-  controllers: [CatController],
-  providers: [CatService],
-  exports: [CatService],
+    imports: [
+    // ÄÄƒng kÃ½ Model vÃ o MongooseModule (EN: Register Model into MongooseModule)
+        MongooseModule.forFeature([{
+            name: Cat.name, schema: CatSchema 
+        }]),
+    ],
+    controllers: [CatController],
+    providers: [CatService],
+    exports: [CatService],
 })
 export class CatModule {}

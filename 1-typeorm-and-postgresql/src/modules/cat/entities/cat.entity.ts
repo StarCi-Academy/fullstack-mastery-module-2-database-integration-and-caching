@@ -45,7 +45,7 @@ export class Cat {
 
   /**
    * Quan há»‡ 1:1 vá»›i CatPassport.
-   * @JoinColumn cho biáº¿t quan há»‡ nÃ y sở hữu khóa ngoại (foreign key).
+   * @JoinColumn cho biáº¿t quan há»‡ nÃ y sở hữu khóa ngoại (foreign key).
    * (EN: 1:1 relationship with CatPassport. @JoinColumn indicates this side owns the foreign key.)
    */
   @OneToOne(() => CatPassport,

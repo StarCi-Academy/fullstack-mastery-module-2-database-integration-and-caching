@@ -12,14 +12,20 @@ import {
 @Entity("comparison_items")
 export class SqlComparisonItemEntity {
     @PrimaryGeneratedColumn("uuid")
-    id!: string
+        id!: string
 
-    @Column({ type: "varchar", length: 255 })
-    title!: string
+    @Column({
+        type: "varchar", length: 255 
+    })
+        title!: string
 
-    @Column({ type: "double precision" })
-    amount!: number
+    @Column({
+        type: "double precision" 
+    })
+        amount!: number
 
-    @CreateDateColumn({ type: "timestamptz" })
-    createdAt!: Date
+    @CreateDateColumn({
+        type: "timestamptz" 
+    })
+        createdAt!: Date
 }

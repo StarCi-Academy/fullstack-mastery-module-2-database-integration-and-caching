@@ -11,8 +11,8 @@ import {
 export class CreateCompareDto {
     @IsString()
     @IsNotEmpty()
-    title!: string
+        title!: string
 
     @IsNumber()
-    amount!: number
+        amount!: number
 }

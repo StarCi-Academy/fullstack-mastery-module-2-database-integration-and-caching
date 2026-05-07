@@ -13,13 +13,19 @@ import {
 
 export type NoSqlComparisonItemDocument = HydratedDocument<NoSqlComparisonItem>
 
-@Schema({ collection: "comparison_items", timestamps: true })
+@Schema({
+    collection: "comparison_items", timestamps: true 
+})
 export class NoSqlComparisonItem {
-    @Prop({ required: true, trim: true })
-    title!: string
+    @Prop({
+        required: true, trim: true 
+    })
+        title!: string
 
-    @Prop({ required: true })
-    amount!: number
+    @Prop({
+        required: true 
+    })
+        amount!: number
 
     // Mongoose tự tạo khi timestamps: true.
     // (EN: Automatically added by Mongoose when timestamps is enabled.)

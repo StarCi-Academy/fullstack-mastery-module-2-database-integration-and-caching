@@ -29,7 +29,9 @@ import {
     imports: [
         TypeOrmModule.forFeature([SqlComparisonItemEntity]),
         MongooseModule.forFeature([
-            { name: NoSqlComparisonItem.name, schema: NoSqlComparisonItemSchema },
+            {
+                name: NoSqlComparisonItem.name, schema: NoSqlComparisonItemSchema 
+            },
         ]),
     ],
     controllers: [CompareController],

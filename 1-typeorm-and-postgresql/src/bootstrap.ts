@@ -21,5 +21,6 @@ export async function bootstrap(): Promise<void> {
     // Cổng: biến môi trường PORT hoặc 3000.
     // (EN: Port from env PORT or default 3000.)
     const port = Number(process.env.PORT) || 3000
-    await app.listen(port, "0.0.0.0")
+    await app.listen(port,
+        "0.0.0.0")
 }

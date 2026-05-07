@@ -11,7 +11,7 @@ import {
 
 /**
  * Owner Entity â€” Äáº¡i diá»‡n cho ngÆ°á»i chá»§ của mÃ¨o.
- * Má»™t ngÆ°á»i chá»§ cÃ³ thể cÃ³ nhiá»u mÃ¨o, vÃ  má»™t con mÃ¨o cÃ³ thể cÃ³ nhiá»u chá»§ (N:N).
+ * Má»™t ngÆ°á»i chá»§ cÃ³ thể cÃ³ nhiá»u mÃ¨o, vÃ  má»™t con mÃ¨o cÃ³ thể cÃ³ nhiá»u chá»§ (N:N).
  * (EN: Represents the owner of a cat. An owner can have many cats, and a cat can have many owners (N:N).)
  */
 @Entity("owners")
