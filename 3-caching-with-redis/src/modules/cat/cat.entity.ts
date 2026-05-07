@@ -7,7 +7,7 @@ import {
 } from "typeorm"
 
 /**
- * Cat Entity â€” Thực thể minh há»a caching.
+ * Cat Entity — Thực thể minh há»a caching.
  * (EN: Cat Entity for caching demonstration.)
  */
 @Entity("cats")

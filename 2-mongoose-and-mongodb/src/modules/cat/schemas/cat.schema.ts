@@ -10,25 +10,25 @@ import {
 } from "mongoose"
 
 /**
- * Cat Document â€” Kiá»ƒu dữ liệu được hydrate tá»« database.
+ * Cat Document — Kiá»ƒu dữ liệu được hydrate từ database.
  * (EN: Hydrated document type from the database.)
  */
 export type CatDocument = HydratedDocument<Cat>;
 
 /**
- * Cat Schema â€” Äáº¡i diá»‡n cho collection 'cats' trong MongoDB.
- * MongoDB lÃ  NoSQL, nhÆ°ng Mongoose giÃºp quáº£n lÃ½ schema cháº·t cháº½.
+ * Cat Schema — Äáº¡i diện cho collection 'cats' trong MongoDB.
+ * MongoDB lÃ  NoSQL, nhưng Mongoose giúp quản lý schema chặt chẽ.
  * (EN: Represents the 'cats' collection in MongoDB. Non-relational, but Mongoose provides schema validation.)
  */
 @Schema({
-    // Tá»± Ä‘á»™ng thÃªm createdAt vÃ  updatedAt (EN: Auto-adds createdAt and updatedAt)
+    // Tự Ä‘á»™ng thêm createdAt vÃ  updatedAt (EN: Auto-adds createdAt and updatedAt)
     timestamps: true,
     // Tên collection trong DB (EN: Collection name in DB)
     collection: "cats",
 })
 export class Cat {
   /**
-   * Tên của mÃ¨o.
+   * Tên của mèo.
    * (EN: Name of the cat.)
    */
   @Prop({
@@ -37,7 +37,7 @@ export class Cat {
       name: string
 
   /**
-   * Tuá»•i của mÃ¨o.
+   * Tuổi của mèo.
    * (EN: Age of the cat.)
    */
   @Prop({
@@ -46,21 +46,21 @@ export class Cat {
       age: number
 
   /**
-   * Giá»‘ng mÃ¨o.
+   * Giống mèo.
    * (EN: Breed of the cat.)
    */
   @Prop()
       breed: string
 
   /**
-   * Danh sÃ¡ch cÃ¡c sá»Ÿ thÃ­ch (máº£ng chuá»—i).
+   * Danh sách các sở thích (mảng chuỗi).
    * (EN: List of hobbies (array of strings).)
    */
   @Prop([String])
       hobbies: string[]
 
   /**
-   * Metadata bá»• sung (Object lá»“ng nhau).
+   * Metadata bổ sung (Object lồng nhau).
    * (EN: Additional metadata (nested object).)
    */
   @Prop({
@@ -70,7 +70,7 @@ export class Cat {
 }
 
 /**
- * Schema Factory â€” Chuyá»ƒn Ä‘á»•i class Cat thÃ nh Mongoose Schema thá»±c thá»¥.
+ * Schema Factory — Chuyá»ƒn đổi class Cat thÃ nh Mongoose Schema thực thụ.
  * (EN: Converts the Cat class into an actual Mongoose Schema.)
  */
 export const CatSchema = SchemaFactory.createForClass(Cat)

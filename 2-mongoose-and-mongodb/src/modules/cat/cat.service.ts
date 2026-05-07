@@ -16,7 +16,7 @@ import {
 } from "./schemas/cat.schema"
 
 /**
- * Cat Service â€” Xá»­ lÃ½ logic nghiệp vụ cho mÃ¨o báº±ng Mongoose.
+ * Cat Service — Xử lý logic nghiệp vụ cho mèo bằng Mongoose.
  * (EN: Business logic service for cats using Mongoose.)
  */
 @Injectable()
@@ -24,18 +24,18 @@ export class CatService {
     private readonly logger = new Logger(CatService.name)
 
     constructor(
-    // Inject Mongoose Model Ä‘Ã£ Ä‘Äƒng kÃ½ (EN: Inject registered Mongoose Model)
+    // Inject Mongoose Model đã Ä‘Äƒng ký (EN: Inject registered Mongoose Model)
     @InjectModel(Cat.name) private readonly catModel: Model<CatDocument>,
     ) {}
 
     /**
-   * Táº¡o mÃ¨o má»›i. (EN: Creates a new cat.)
+   * Tạo mèo mới. (EN: Creates a new cat.)
    *
-   * @param catData - Dá»¯ liá»‡u mÃ¨o (EN: cat data)
-   * @returns Promise<Cat> - MÃ¨o vá»«a được táº¡o (EN: newly created cat)
+   * @param catData - Dữ liệu mèo (EN: cat data)
+   * @returns Promise<Cat> - Mèo vừa được tạo (EN: newly created cat)
    */
     async create(catData: Partial<Cat>): Promise<Cat> {
-    // [prepare] Khởi tạo instance má»›i tá»« model
+    // [prepare] Khởi tạo instance mới từ model
     // (EN: Prepare new instance from model)
         this.logger.log({
             message: "Preparing to create new cat", data: catData 
@@ -45,7 +45,7 @@ export class CatService {
         // [execute] Lưu vÃ o MongoDB (EN: Execute save to MongoDB)
         const savedCat = await createdCat.save()
 
-        // [confirm] Tráº£ vá» vÃ  log thÃ nh cÃ´ng (EN: Confirm and log success)
+        // [confirm] Trả vá» vÃ  log thÃ nh công (EN: Confirm and log success)
         this.logger.log({
             message: "Cat created successfully", id: savedCat._id 
         })
@@ -53,13 +53,13 @@ export class CatService {
     }
 
     /**
-   * Láº¥y toÃ n bá»™ danh sÃ¡ch mÃ¨o vá»›i search vÃ  filter cÆ¡ báº£n.
+   * Lấy toÃ n bá»™ danh sách mèo với search vÃ  filter cơ bản.
    * (EN: Retrieves all cats with basic search and filter.)
    *
    * @returns Promise<Cat[]>
    */
     async findAll(): Promise<Cat[]> {
-    // [execute] Truy váº¥n nÃ¢ng cao: sort theo age giáº£m dáº§n, limit 10
+    // [execute] Truy vấn nâng cao: sort theo age giảm dần, limit 10
     // (EN: Advanced query: sort by age descending, limit 10)
         this.logger.log("Fetching all cats from MongoDB...")
         return await this.catModel
@@ -72,13 +72,13 @@ export class CatService {
     }
 
     /**
-   * TÃ¬m mÃ¨o theo tÃªn (Minh há»a syntax findOne).
+   * Tìm mèo theo tên (Minh há»a syntax findOne).
    * (EN: Find cat by name (illustrates findOne syntax).)
    */
     async findByName(name: string): Promise<Cat> {
         this.logger.log(`Searching for cat with name: ${name}`)
     
-        // [execute] TÃ¬m kiáº¿m theo thuá»™c tÃ­nh name (Ä‘Ã£ Ä‘Ã¡nh index trong schema)
+        // [execute] Tìm kiếm theo thuá»™c tính name (đã đánh index trong schema)
         // (EN: Search by name attribute (indexed in schema))
         const cat = await this.catModel.findOne({
             name 
@@ -93,10 +93,10 @@ export class CatService {
     }
 
     /**
-   * Cáº­p nháº­t thông tin mÃ¨o theo ID. (EN: Updates cat by ID.)
+   * Cập nhật thông tin mèo theo ID. (EN: Updates cat by ID.)
    */
     async update(id: string, updateData: Partial<Cat>): Promise<Cat> {
-    // [execute] findByIdAndUpdate: { new: true } để tráº£ vá» báº£n ghi sau khi update
+    // [execute] findByIdAndUpdate: { new: true } để trả vá» bản ghi sau khi update
     // (EN: findByIdAndUpdate: { new: true } to return the record after update)
         const updatedCat = await this.catModel
             .findByIdAndUpdate(id,

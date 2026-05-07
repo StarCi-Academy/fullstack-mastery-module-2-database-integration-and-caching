@@ -19,12 +19,12 @@ import {
 } from "./cat.controller"
 
 /**
- * Cat Module â€” Káº¿t ná»‘i Schema vÃ  cÃ¡c thÃ nh pháº§n xử lý của Cat.
+ * Cat Module — Kết nối Schema vÃ  các thÃ nh phần xử lý của Cat.
  * (EN: Connects Schema and processing components for Cat.)
  */
 @Module({
     imports: [
-    // ÄÄƒng kÃ½ Model vÃ o MongooseModule (EN: Register Model into MongooseModule)
+    // ÄÄƒng ký Model vÃ o MongooseModule (EN: Register Model into MongooseModule)
         MongooseModule.forFeature([{
             name: Cat.name, schema: CatSchema 
         }]),

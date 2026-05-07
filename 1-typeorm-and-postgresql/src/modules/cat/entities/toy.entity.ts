@@ -10,8 +10,8 @@ import {
 } from "./cat.entity"
 
 /**
- * Toy Entity â€” Äáº¡i diá»‡n cho đồ chơi của mÃ¨o.
- * Nhiá»u đồ chơi cÃ³ thể thuá»™c vá» cùng một con mÃ¨o (N:1).
+ * Toy Entity — Äáº¡i diện cho đồ chơi của mèo.
+ * Nhiá»u đồ chơi có thể thuá»™c vá» cùng một con mèo (N:1).
  * (EN: Represents a cat's toy. Many toys can belong to the same cat (N:1).)
  */
 @Entity("toys")
@@ -31,7 +31,7 @@ export class Toy {
       name: string
 
   /**
-   * Quan há»‡ N:1 vá»›i Cat.
+   * Quan hệ N:1 với Cat.
    * (EN: N:1 relationship with Cat.)
    */
   @ManyToOne(() => Cat,

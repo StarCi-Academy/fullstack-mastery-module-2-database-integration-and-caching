@@ -25,8 +25,8 @@ import {
 } from "./cat.entity"
 
 /**
- * Cat Service â€” Minh há»a 3 táº§ng caching (DB, Logic, Response).
- * (EN: Cat Service â€” Demonstrates 3 caching layers: DB, Logic, Response.)
+ * Cat Service — Minh há»a 3 tầng caching (DB, Logic, Response).
+ * (EN: Cat Service — Demonstrates 3 caching layers: DB, Logic, Response.)
  */
 @Injectable()
 export class CatService {
@@ -58,7 +58,7 @@ export class CatService {
     @InjectRepository(Cat)
     private readonly catRepository: Repository<Cat>,
     private readonly dataSource: DataSource,
-    // Inject CACHE_MANAGER để thá»±c hiá»‡n manual caching báº±ng code logic
+    // Inject CACHE_MANAGER để thực hiện manual caching bằng code logic
     // (EN: Inject CACHE_MANAGER for manual programmatic caching)
     @Inject(CACHE_MANAGER)
     private readonly cacheManager: Cache,
@@ -66,13 +66,13 @@ export class CatService {
 
     /**
    * LAYER 1: Database Query Cache (Tầng Database).
-   * DÃ¹ng TypeORM để cache lại kết quả sau khi thực thi SQL.
+   * Dùng TypeORM để cache lại kết quả sau khi thực thi SQL.
    * (EN: LAYER 1: Database Query Cache (Database layer). Uses TypeORM to cache SQL execution results.)
    */
     async findByDbCache(): Promise<Cat[]> {
         this.logger.log("Executing Layer 1: TypeORM Query Cache check...")
 
-        // [execute] DB query vá»›i tÃ¹y chá»n cache của TypeORM
+        // [execute] DB query với tùy chá»n cache của TypeORM
         // (EN: DB query with TypeORM cache option)
         return await this.catRepository.find({
             cache: {
@@ -83,8 +83,8 @@ export class CatService {
     }
 
     /**
-   * LAYER 2: Cache By Logic (Tầng Nghiá»‡p vá»¥).
-   * Tá»± viáº¿t code để kiểm tra cache trước khi thá»±c hiá»‡n logic nặng.
+   * LAYER 2: Cache By Logic (Tầng Nghiệp vụ).
+   * Tự viết code để kiểm tra cache trước khi thực hiện logic nặng.
    * (EN: LAYER 2: Cache By Logic (Business layer). Manually check cache before heavy logic.)
    */
     async findByLogicCache(): Promise<{ message: string; timestamp: string }> {
@@ -102,22 +102,22 @@ export class CatService {
         this.logger.warn("Logic Cache Miss! Simulating heavy work for 1 second...")
         await this.sleep(1000) // Sleep 1s
         const result = {
-            message: "Hải sản cho mÃ¨o cực phẩm",
+            message: "Hải sản cho mèo cực phẩm",
             timestamp: new Date().toISOString(),
         }
 
-        // [confirm] Lưu kết quả vÃ o cache Ä‘á»… dùng cho lần sau
+        // [confirm] Lưu kết quả vÃ o cache đễ dùng cho lần sau
         // (EN: Save result to cache for future use)
         await this.cacheManager.set(this.logicCacheKey,
             result,
-            60000) // 1 phÃºt (EN: 1 minute)
+            60000) // 1 phút (EN: 1 minute)
 
         return result
     }
 
     /**
-   * LAYER 3: Response Cache (Tầng Tiáº¿p nháº­n).
-   * Tầng nÃ y thÆ°á»ng được handle á»Ÿ Controller, service chá»‰ tráº£ vá» data thô.
+   * LAYER 3: Response Cache (Tầng Tiếp nhận).
+   * Tầng nÃ y thÆ°á»ng được handle ở Controller, service chỉ trả vá» data thô.
    * (EN: LAYER 3: Response Cache (Entry layer). Usually handled at Controller; service just returns raw data.)
    */
     findForResponseCache(): string {
@@ -129,7 +129,7 @@ export class CatService {
     }
 
     /**
-   * LAYER 3 helper: mÃ´ phá»ng tác vụ nặng 1 giây cho láº§n cache miss.
+   * LAYER 3 helper: mô phá»ng tác vụ nặng 1 giây cho lần cache miss.
    * (EN: Simulates 1-second heavy work for response-layer cache miss.)
    */
     async findForResponseCacheWithDelay(): Promise<string> {
@@ -141,7 +141,7 @@ export class CatService {
     }
 
     /**
-   * Xóa key cache của táº§ng response để demo lại miss/hit.
+   * Xóa key cache của tầng response để demo lại miss/hit.
    * (EN: Clears response-layer cache key to replay miss/hit demo.)
    */
     async clearResponseLayerCache(): Promise<{
@@ -157,7 +157,7 @@ export class CatService {
     }
 
     /**
-   * Xóa key cache của táº§ng logic để thử lại luồng miss/hit.
+   * Xóa key cache của tầng logic để thử lại luồng miss/hit.
    * (EN: Clears logic-layer cache key to replay miss/hit.)
    */
     async clearLogicLayerCache(): Promise<{
@@ -192,7 +192,7 @@ export class CatService {
     }
 
     /**
-   * Seed nhanh dữ liệu cat để demo caching vá»›i tập dữ liệu lớn.
+   * Seed nhanh dữ liệu cat để demo caching với tập dữ liệu lớn.
    * (EN: Quickly seeds cat data for large-dataset caching demo.)
    */
     async seedCats(count = 1000): Promise<{

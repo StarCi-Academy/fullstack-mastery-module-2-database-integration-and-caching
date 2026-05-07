@@ -19,8 +19,8 @@ import {
 } from "./cat.controller"
 
 /**
- * Cat Module â€” ÄÄƒng kÃ½ entity vÃ  bá»™ xử lý logic cho mÃ¨o.
- * (EN: Cat Module â€” Registers entity and business logic for cats.)
+ * Cat Module — ÄÄƒng ký entity vÃ  bá»™ xử lý logic cho mèo.
+ * (EN: Cat Module — Registers entity and business logic for cats.)
  */
 @Module({
     imports: [TypeOrmModule.forFeature([Cat])],

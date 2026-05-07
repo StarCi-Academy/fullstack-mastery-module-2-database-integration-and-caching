@@ -13,7 +13,7 @@ import {
 } from "rxjs"
 
 /**
- * RequestTimingInterceptor â€” Äo thá»i gian xử lý request vÃ  in console.
+ * RequestTimingInterceptor — Äo thá»i gian xử lý request vÃ  in console.
  * (EN: Measures request duration and prints it to console.)
  */
 @Injectable()

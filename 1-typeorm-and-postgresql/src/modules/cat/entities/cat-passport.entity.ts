@@ -10,8 +10,8 @@ import {
 } from "./cat.entity"
 
 /**
- * CatPassport Entity â€” Äáº¡i diá»‡n cho hộ chiếu của mÃ¨o.
- * Má»—i con mÃ¨o chá»‰ cÃ³ duy nhất một hộ chiếu (1:1).
+ * CatPassport Entity — Äáº¡i diện cho hộ chiếu của mèo.
+ * Mỗi con mèo chỉ có duy nhất một hộ chiếu (1:1).
  * (EN: Represents a cat's passport. Each cat has exactly one passport (1:1).)
  */
 @Entity("cat_passports")
@@ -31,7 +31,7 @@ export class CatPassport {
       passportNumber: string
 
   /**
-   * Quan há»‡ 1:1 ngÆ°á»£c lại vá»›i Cat.
+   * Quan hệ 1:1 ngược lại với Cat.
    * (EN: Inverse 1:1 relationship with Cat.)
    */
   @OneToOne(() => Cat,
