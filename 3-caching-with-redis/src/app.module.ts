@@ -1,4 +1,4 @@
-﻿/**
+/**
  * AppModule — dang ky cac thanh phan cua feature App.
  * (EN: AppModule — registers components for App feature.)
  */
@@ -29,11 +29,11 @@ import {
 } from "./modules"
 import {
     RequestTimingInterceptor 
-} from "./common/interceptors/request-timing.interceptor"
+} from "./common"
 
 /**
- * AppModule â€” Cấu hình há»‡ thá»‘ng Caching 3 lá»›p (Response, Logic, DB).
- * (EN: Root module â€” Configures 3-layer caching system: Response, Logic, DB.)
+ * AppModule — Cấu hình hệ thống Caching 3 lớp (Response, Logic, DB).
+ * (EN: Root module — Configures 3-layer caching system: Response, Logic, DB.)
  */
 @Module({
     imports: [
