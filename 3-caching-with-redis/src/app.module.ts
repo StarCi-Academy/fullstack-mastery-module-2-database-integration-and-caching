@@ -43,9 +43,9 @@ import { RequestTimingInterceptor } from './common/interceptors/request-timing.i
       type: 'postgres',
       host: 'localhost',
       port: 5432,
-      username: 'starci_user',
-      password: 'starci_password',
-      database: 'starci_db',
+      username: 'postgres',
+      password: 'postgres',
+      database: 'demo',
       entities: [Cat],
       synchronize: true,
       cache: {
