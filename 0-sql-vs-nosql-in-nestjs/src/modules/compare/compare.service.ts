@@ -102,4 +102,83 @@ export class CompareService {
             noSqlItems,
         }
     }
+
+    /**
+     * Đo độ trễ song song của cùng một workload trên SQL và NoSQL.
+     * (EN: Measure parallel latency of the same workload on SQL and NoSQL.)
+     *
+     * @returns Promise<{ sqlMs: number; noSqlMs: number; deltaMs: number }>
+     */
+    async getTimings(): Promise<{
+        sqlMs: number;
+        noSqlMs: number;
+        deltaMs: number;
+    }> {
+        // [prepare] Dùng performance.now() cho độ chính xác sub-millisecond.
+        // (EN: Use performance.now() for sub-millisecond precision.)
+        const sqlStart = performance.now()
+        await this.sqlRepository.find({
+            order: {
+                createdAt: "DESC",
+            },
+            take: 20,
+        })
+        const sqlMs = Number((performance.now() - sqlStart).toFixed(3))
+
+        // [execute] Đo riêng từng engine để không bị nhiễu bởi Promise.all scheduling.
+        // (EN: Measure each engine separately to avoid Promise.all scheduling noise.)
+        const noSqlStart = performance.now()
+        await this.noSqlModel
+            .find()
+            .sort({
+                createdAt: -1,
+            })
+            .limit(20)
+            .lean()
+            .exec()
+        const noSqlMs = Number((performance.now() - noSqlStart).toFixed(3))
+
+        // [confirm] deltaMs > 0 nghĩa NoSQL nhanh hơn; < 0 nghĩa SQL nhanh hơn.
+        // (EN: deltaMs > 0 means NoSQL is faster; < 0 means SQL is faster.)
+        const deltaMs = Number((sqlMs - noSqlMs).toFixed(3))
+        return {
+            sqlMs,
+            noSqlMs,
+            deltaMs,
+        }
+    }
+
+    /**
+     * Xóa toàn bộ dữ liệu cả PG (TRUNCATE trong transaction) và Mongo (deleteMany).
+     * (EN: Clear all data in both PG (TRUNCATE in a transaction) and Mongo (deleteMany).)
+     *
+     * @returns Promise<{ pgDeleted: number; mongoDeleted: number }>
+     */
+    async deleteAll(): Promise<{
+        pgDeleted: number;
+        mongoDeleted: number;
+    }> {
+        // [prepare] Đếm trước số bản ghi để phía test kiểm chứng được lượng xóa.
+        // (EN: Count records first so tests can validate the delete count.)
+        const pgBefore = await this.sqlRepository.count()
+
+        // [execute] Dùng TypeORM transaction để TRUNCATE đảm bảo atomicity.
+        // (EN: Use a TypeORM transaction so TRUNCATE remains atomic.)
+        await this.sqlRepository.manager.transaction(async (trx) => {
+            await trx.query(
+                `TRUNCATE TABLE "${this.sqlRepository.metadata.tableName}" RESTART IDENTITY CASCADE`,
+            )
+        })
+
+        // [execute] Mongo deleteMany trả về deletedCount — bộ đếm chính xác.
+        // (EN: Mongo deleteMany returns deletedCount — accurate counter.)
+        const mongoResult = await this.noSqlModel.deleteMany({}).exec()
+
+        // [confirm] Chuẩn hóa response polyglot để dễ verify side-by-side.
+        // (EN: Normalize polyglot response for easy side-by-side verification.)
+        return {
+            pgDeleted: pgBefore,
+            mongoDeleted: mongoResult.deletedCount ?? 0,
+        }
+    }
 }

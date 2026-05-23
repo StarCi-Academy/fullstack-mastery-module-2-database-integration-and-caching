@@ -64,9 +64,18 @@ export class Cat {
    * (EN: Additional metadata (nested object).)
    */
   @Prop({
-      type: Object 
+      type: Object
   })
       metadata: Record<string, any>
+
+  /**
+   * Số lượt thích (dùng cho demo atomic `$inc`).
+   * (EN: Like count (used for the atomic `$inc` demo).)
+   */
+  @Prop({
+      required: true, default: 0, min: 0,
+  })
+      likes: number
 }
 
 /**

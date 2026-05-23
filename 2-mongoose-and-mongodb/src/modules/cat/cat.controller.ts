@@ -30,11 +30,18 @@ export class CatController {
     }
 
   /**
-   * GET /cats — Lấy danh sách mèo (mặc định limit 10).
-   * (EN: GET /cats — Get cat list (default limit 10).)
+   * GET /cats — Lấy danh sách mèo (mặc định limit 10);
+   * `GET /cats?hobby=fishing` để filter theo phần tử trong mảng hobbies.
+   * (EN: GET /cats — Get cat list (default limit 10); `GET /cats?hobby=fishing`
+   * to filter by an element inside the hobbies array.)
    */
   @Get()
-  async findAll(): Promise<Cat[]> {
+  async findAll(@Query("hobby") hobby?: string): Promise<Cat[]> {
+      // Nhánh `$in: [hobby]` chỉ kích hoạt khi query string có `hobby`.
+      // (EN: The `$in: [hobby]` branch only triggers when the `hobby` query is present.)
+      if (hobby) {
+          return await this.catService.findByHobby(hobby)
+      }
       return await this.catService.findAll()
   }
 
@@ -58,5 +65,16 @@ export class CatController {
   ): Promise<Cat> {
       return await this.catService.update(id,
           updateData)
+  }
+
+  /**
+   * POST /cats/:id/like — Tăng `likes` bằng atomic `$inc`.
+   * (EN: POST /cats/:id/like — Increment `likes` using atomic `$inc`.)
+   */
+  @Post(":id/like")
+  async like(@Param("id") id: string): Promise<Cat> {
+      // Atomic update -- không race condition khi nhiều client gọi cùng lúc.
+      // (EN: Atomic update -- no race condition when multiple clients call concurrently.)
+      return await this.catService.like(id)
   }
 }

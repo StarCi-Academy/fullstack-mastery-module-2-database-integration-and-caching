@@ -12,7 +12,7 @@ import {
     Repository 
 } from "typeorm"
 import {
-    Cat 
+    Cat, Toy
 } from "./entities"
 
 /**
@@ -27,6 +27,8 @@ export class CatService {
     constructor(
     @InjectRepository(Cat)
     private readonly catRepository: Repository<Cat>,
+    @InjectRepository(Toy)
+    private readonly toyRepository: Repository<Toy>,
     ) {}
 
     /**
@@ -99,5 +101,63 @@ export class CatService {
         }
 
         return cat
+    }
+
+    /**
+     * Lấy chi tiết một con mèo theo ID kèm explicit relation loading (passport, toys, owners).
+     * (EN: Returns cat details by ID with explicit relation loading (passport, toys, owners).)
+     *
+     * @param id - ID của mèo (EN: cat ID)
+     * @returns Promise<Cat> - Mèo + các quan hệ đã được hydrate (EN: cat + hydrated relations)
+     */
+    async findWithRelations(id: number): Promise<Cat> {
+        // [execute] Liệt kê tường minh các relations để chứng minh eager-loading.
+        // (EN: Explicitly list relations to demonstrate eager-loading.)
+        const cat = await this.catRepository.findOne({
+            where: {
+                id,
+            },
+            relations: ["passport",
+                "toys",
+                "owners"],
+        })
+
+        // [confirm] Ném 404 nếu không tồn tại để client dễ phân biệt empty vs missing.
+        // (EN: Throw 404 if missing so the client can tell empty vs missing apart.)
+        if (!cat) {
+            this.logger.error(`Cat with ID ${id} not found`)
+            throw new NotFoundException(`Cat with ID ${id} not found`)
+        }
+
+        return cat
+    }
+
+    /**
+     * Thêm một Toy mới vào con mèo đang tồn tại (chứng minh 1:N collection mutation).
+     * (EN: Append a new Toy to an existing cat (demonstrates 1:N collection mutation).)
+     *
+     * @param catId - ID của mèo (EN: cat ID)
+     * @param toyData - Dữ liệu toy mới (EN: new toy data)
+     * @returns Promise<Cat> - Mèo sau khi thêm toy + collection refresh (EN: cat after adding toy with refreshed collection)
+     */
+    async addToy(catId: number, toyData: Partial<Toy>): Promise<Cat> {
+        // [prepare] Đảm bảo cat tồn tại trước khi đính kèm toy.
+        // (EN: Make sure the cat exists before attaching a toy.)
+        const cat = await this.findOne(catId)
+
+        // [execute] Tạo Toy mới gắn FK `cat` qua relation -- TypeORM tự gán `catId`.
+        // (EN: Create new Toy attached via the `cat` relation -- TypeORM auto-fills `catId`.)
+        const toy = this.toyRepository.create({
+            ...toyData,
+            cat,
+        })
+        await this.toyRepository.save(toy)
+
+        // [confirm] Đọc lại cat kèm relations để response phản ánh state mới nhất.
+        // (EN: Re-read cat with relations so the response reflects the freshest state.)
+        this.logger.log({
+            message: "Toy added to cat", catId, toyId: toy.id,
+        })
+        return await this.findWithRelations(catId)
     }
 }

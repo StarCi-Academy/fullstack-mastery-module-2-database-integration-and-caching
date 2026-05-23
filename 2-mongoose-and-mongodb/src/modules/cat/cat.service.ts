@@ -112,4 +112,56 @@ export class CatService {
 
         return updatedCat
     }
+
+    /**
+     * Tìm mèo theo phần tử trong mảng `hobbies` (toán tử `$in`).
+     * (EN: Find cats by an element inside the `hobbies` array (using `$in` operator).)
+     *
+     * @param hobby - Tên hobby cần tìm (EN: hobby name to look up)
+     * @returns Promise<Cat[]> - Danh sách mèo có hobby tương ứng (EN: cats with the matching hobby)
+     */
+    async findByHobby(hobby: string): Promise<Cat[]> {
+        // [execute] `$in` so khớp bất kỳ phần tử nào trong mảng hobbies.
+        // (EN: `$in` matches any element inside the hobbies array.)
+        this.logger.log(`Querying cats with hobby="${hobby}"`)
+        return await this.catModel
+            .find({
+                hobbies: {
+                    $in: [hobby],
+                },
+            })
+            .exec()
+    }
+
+    /**
+     * Tăng `likes` cho cat bằng atomic update `$inc` (race-free).
+     * (EN: Increment `likes` for a cat using the atomic `$inc` update (race-free).)
+     *
+     * @param id - ID Mongo object (EN: Mongo ObjectId string)
+     * @returns Promise<Cat> - Cat sau khi `likes` đã tăng (EN: cat after `likes` was incremented)
+     */
+    async like(id: string): Promise<Cat> {
+        // [execute] `$inc` chạy server-side -- không cần read-modify-write từ client.
+        // (EN: `$inc` runs server-side -- no read-modify-write round trip from the client.)
+        const updated = await this.catModel
+            .findByIdAndUpdate(
+                id,
+                {
+                    $inc: {
+                        likes: 1,
+                    },
+                },
+                {
+                    returnDocument: "after",
+                },
+            )
+            .exec()
+
+        // [confirm] Trả về document mới hoặc 404 nếu không tồn tại.
+        // (EN: Return the updated document or 404 if missing.)
+        if (!updated) {
+            throw new NotFoundException(`Cat with id "${id}" not found`)
+        }
+        return updated
+    }
 }

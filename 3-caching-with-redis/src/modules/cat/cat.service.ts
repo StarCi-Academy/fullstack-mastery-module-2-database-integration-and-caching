@@ -192,6 +192,61 @@ export class CatService {
     }
 
     /**
+     * Lấy dữ liệu qua cả 3 tầng (response/logic/db) để demo cascade khi invalidate.
+     * (EN: Read data through all 3 layers (response/logic/db) for cascade invalidation demo.)
+     */
+    async findAllLayers(): Promise<{
+        responseSample: string;
+        logicSample: { message: string; timestamp: string };
+        dbCount: number;
+    }> {
+        // [execute] Trigger từng tầng theo thứ tự để mỗi layer fill cache lần đầu.
+        // (EN: Trigger each layer in order so the first call fills every cache.)
+        const responseSample = await this.findForResponseCacheWithDelay()
+        const logicSample = await this.findByLogicCache()
+        const dbItems = await this.findByDbCache()
+
+        // [confirm] Trả về snapshot ngắn gọn để client dễ verify hit/miss.
+        // (EN: Return a compact snapshot so the client can easily verify hit/miss.)
+        return {
+            responseSample,
+            logicSample,
+            dbCount: dbItems.length,
+        }
+    }
+
+    /**
+     * Xóa cache cả 3 tầng cùng lúc — cascade invalidation cho fresh-read lần kế tiếp.
+     * (EN: Clear all 3 cache layers at once — cascade invalidation so the next read is fresh.)
+     */
+    async invalidateAllLayers(): Promise<{
+        message: string;
+        cleared: { responseLayer: string; logicLayer: string; dbLayer: string };
+    }> {
+        // [execute] Xóa song song để chứng minh thứ tự xóa không quan trọng giữa các tầng.
+        // (EN: Delete in parallel to show that inter-layer order does not matter.)
+        await Promise.all([
+            this.cacheManager.del(this.responseCacheKey),
+            this.cacheManager.del(this.logicCacheKey),
+            this.dataSource.queryResultCache
+                ? this.dataSource.queryResultCache.remove([this.dbQueryCacheKey])
+                : Promise.resolve(),
+        ])
+
+        // [confirm] Log để demo và trả cấu trúc dễ đọc cho client.
+        // (EN: Log for demo purposes and return a readable structure for the client.)
+        this.logger.warn("All 3 cache layers invalidated (response + logic + db).")
+        return {
+            message: "All 3 cache layers cleared. Next /cats/all-layers/:id will MISS on every layer.",
+            cleared: {
+                responseLayer: this.responseCacheKey,
+                logicLayer: this.logicCacheKey,
+                dbLayer: this.dbQueryCacheKey,
+            },
+        }
+    }
+
+    /**
    * Seed nhanh dữ liệu cat để demo caching với tập dữ liệu lớn.
    * (EN: Quickly seeds cat data for large-dataset caching demo.)
    */

@@ -9,7 +9,7 @@ import {
     CatService 
 } from "./cat.service"
 import {
-    Cat 
+    Cat, Toy
 } from "./entities"
 
 /**
@@ -49,5 +49,32 @@ export class CatController {
       ParseIntPipe) id: number): Promise<Cat> {
       // Tìm kiếm mèo theo ID (EN: find cat by ID)
       return await this.catService.findOne(id)
+  }
+
+  /**
+   * GET /cats/:id/with-relations — Lấy mèo + explicit relations (passport, toys, owners).
+   * (EN: GET /cats/:id/with-relations — Get cat plus explicit relations (passport, toys, owners).)
+   */
+  @Get(":id/with-relations")
+  async findWithRelations(
+    @Param("id", ParseIntPipe) id: number,
+  ): Promise<Cat> {
+      // Eager-load relations để chứng minh trade-off giữa eager vs lazy.
+      // (EN: Eager-load relations to demonstrate the eager vs lazy trade-off.)
+      return await this.catService.findWithRelations(id)
+  }
+
+  /**
+   * POST /cats/:id/toys — Thêm Toy mới vào con mèo (1:N mutation).
+   * (EN: POST /cats/:id/toys — Add a new Toy to the cat (1:N mutation).)
+   */
+  @Post(":id/toys")
+  async addToy(
+    @Param("id", ParseIntPipe) id: number,
+    @Body() toyData: Partial<Toy>,
+  ): Promise<Cat> {
+      // Đẩy dữ liệu xuống service -- TypeORM tự ghi FK `catId` qua relation `cat`.
+      // (EN: Pass data to service -- TypeORM auto-writes FK `catId` via the `cat` relation.)
+      return await this.catService.addToy(id, toyData)
   }
 }

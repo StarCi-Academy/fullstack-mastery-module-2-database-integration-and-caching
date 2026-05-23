@@ -126,4 +126,34 @@ export class CatController {
       this.logger.warn("--- Clearing Layer 1 (DB Query Cache) key ---")
       return await this.catService.clearDbLayerCache()
   }
+
+  /**
+   * GET /cats/all-layers/:id — Trigger cả 3 tầng cache theo thứ tự để fill toàn bộ.
+   * (EN: GET /cats/all-layers/:id — Trigger all 3 layers in order to populate every cache.)
+   *
+   * `:id` ở đây chỉ là tag cho người học đặt tên scenario, service không dùng tới giá trị.
+   * (EN: `:id` is only a scenario tag chosen by the learner; the service does not use the value.)
+   */
+  @Get("all-layers/:id")
+  async getAllLayers(): Promise<{
+    responseSample: string;
+    logicSample: { message: string; timestamp: string };
+    dbCount: number;
+  }> {
+      this.logger.log("--- Triggering ALL 3 layers (cascade fill) ---")
+      return await this.catService.findAllLayers()
+  }
+
+  /**
+   * DELETE /cats/all-layers/cache — Xóa cache cả 3 tầng cùng lúc (cascade invalidation).
+   * (EN: DELETE /cats/all-layers/cache — Clear all 3 cache layers at once (cascade invalidation).)
+   */
+  @Delete("all-layers/cache")
+  async clearAllLayers(): Promise<{
+    message: string;
+    cleared: { responseLayer: string; logicLayer: string; dbLayer: string };
+  }> {
+      this.logger.warn("--- Clearing ALL 3 cache layers ---")
+      return await this.catService.invalidateAllLayers()
+  }
 }

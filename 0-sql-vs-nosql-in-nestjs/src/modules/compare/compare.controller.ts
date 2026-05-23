@@ -5,6 +5,7 @@
 import {
     Body,
     Controller,
+    Delete,
     Get,
     Post,
 } from "@nestjs/common"
@@ -35,5 +36,27 @@ export class CompareController {
     @Get("read")
     read() {
         return this.compareService.read()
+    }
+
+    /**
+     * Đo song song latency của cùng workload trên SQL vs NoSQL.
+     * (EN: Measure parallel latency of the same workload on SQL vs NoSQL.)
+     */
+    @Get("timings")
+    getTimings(): Promise<{
+        sqlMs: number;
+        noSqlMs: number;
+        deltaMs: number;
+    }> {
+        return this.compareService.getTimings()
+    }
+
+    /**
+     * Dọn dữ liệu trên cả 2 engine (polyglot cleanup) bằng PG TRUNCATE + Mongo deleteMany.
+     * (EN: Clean data on both engines (polyglot cleanup) via PG TRUNCATE + Mongo deleteMany.)
+     */
+    @Delete("all")
+    deleteAll(): Promise<{ pgDeleted: number; mongoDeleted: number }> {
+        return this.compareService.deleteAll()
     }
 }
