@@ -19,11 +19,11 @@ import {
 } from "./compare.service"
 import {
     SqlComparisonItemEntity,
-} from "./entities"
+} from "../../entities/postgresql/main"
 import {
     NoSqlComparisonItem,
     NoSqlComparisonItemSchema,
-} from "./schemas"
+} from "../../schemas/mongodb/main"
 
 @Module({
     imports: [

@@ -12,8 +12,8 @@ import {
     Model 
 } from "mongoose"
 import {
-    Cat, CatDocument 
-} from "./schemas/cat.schema"
+    Cat, CatDocument
+} from "../../schemas/mongodb/main"
 
 /**
  * Cat Service — Xử lý logic nghiệp vụ cho mèo bằng Mongoose.

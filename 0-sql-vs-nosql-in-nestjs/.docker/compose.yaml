@@ -1,8 +1,8 @@
 # Stack hạ tầng bài 0-sql-vs-nosql-in-nestjs — chỉ infra, backend chạy local (nest start).
 # (EN: Infrastructure stack for 0-sql-vs-nosql-in-nestjs — infra only, backend runs locally.)
 #
-# Thư mục: cd fullstack-mastery-module-2-database-integration-orm-odm-caching/0-sql-vs-nosql-in-nestjs/.docker
-# (EN: Working dir: cd fullstack-mastery-module-2-database-integration-orm-odm-caching/0-sql-vs-nosql-in-nestjs/.docker)
+# Thư mục: cd fullstack-mastery-module-2-database-integration-and-caching/0-sql-vs-nosql-in-nestjs/.docker
+# (EN: Working dir: cd fullstack-mastery-module-2-database-integration-and-caching/0-sql-vs-nosql-in-nestjs/.docker)
 #
 # Khởi chạy: docker compose up -d
 # (EN: Start: docker compose up -d)
@@ -15,6 +15,7 @@ services:
   # PostgreSQL — persistence cho phần SQL (TypeORM).
   # (EN: PostgreSQL — persistence for the SQL section (TypeORM).)
   postgres:
+    container_name: 0-sql-vs-nosql-in-nestjs-postgres
     image: postgres:16-alpine
     environment:
       POSTGRES_USER: starci_user
@@ -26,10 +27,13 @@ services:
       - "5432:5432"
     volumes:
       - pg_data:/var/lib/postgresql/data
+    networks:
+      - 0-sql-vs-nosql-in-nestjs-network
 
   # MongoDB — persistence cho phần NoSQL (Mongoose).
   # (EN: MongoDB — persistence for the NoSQL section (Mongoose).)
   mongodb:
+    container_name: 0-sql-vs-nosql-in-nestjs-mongodb
     image: mongo:7
     environment:
       MONGO_INITDB_ROOT_USERNAME: starci_admin
@@ -41,11 +45,14 @@ services:
       - "27017:27017"
     volumes:
       - mongo_data:/data/db
+    networks:
+      - 0-sql-vs-nosql-in-nestjs-network
 
 volumes:
   pg_data:
   mongo_data:
 
 networks:
-  0-sql-vs-nosql-in-nestjs:
-    name: 0-sql-vs-nosql-in-nestjs
+  0-sql-vs-nosql-in-nestjs-network:
+    name: 0-sql-vs-nosql-in-nestjs-network
+    driver: bridge

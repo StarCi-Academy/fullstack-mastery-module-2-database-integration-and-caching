@@ -9,8 +9,8 @@ import {
     MongooseModule 
 } from "@nestjs/mongoose"
 import {
-    Cat, CatSchema 
-} from "./schemas/cat.schema"
+    Cat, CatSchema
+} from "../../schemas/mongodb/main"
 import {
     CatService 
 } from "./cat.service"

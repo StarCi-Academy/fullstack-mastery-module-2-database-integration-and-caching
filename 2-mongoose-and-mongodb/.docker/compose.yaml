@@ -15,6 +15,7 @@ services:
   # MongoDB — persistence cho bài học (Mongoose).
   # (EN: MongoDB — persistence for the lesson (Mongoose).)
   mongodb:
+    container_name: 2-mongoose-and-mongodb-mongodb
     image: mongo:7
     environment:
       MONGO_INITDB_ROOT_USERNAME: starci_admin
@@ -26,10 +27,13 @@ services:
       - "27017:27017"
     volumes:
       - mongo_data:/data/db
+    networks:
+      - 2-mongoose-and-mongodb-network
 
 volumes:
   mongo_data:
 
 networks:
-  2-mongoose-and-mongodb:
-    name: 2-mongoose-and-mongodb
+  2-mongoose-and-mongodb-network:
+    name: 2-mongoose-and-mongodb-network
+    driver: bridge

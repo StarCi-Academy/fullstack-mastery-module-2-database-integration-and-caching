@@ -15,12 +15,14 @@ import {
     databaseConfig, DatabaseConfig,
 } from "./config"
 import {
+    CatModule,
+} from "./modules"
+import {
     Cat,
     CatPassport,
     Toy,
     Owner,
-    CatModule,
-} from "./modules"
+} from "./entities/postgresql/main"
 
 @Module({
     imports: [

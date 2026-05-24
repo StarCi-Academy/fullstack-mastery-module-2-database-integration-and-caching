@@ -9,8 +9,8 @@ import {
     TypeOrmModule 
 } from "@nestjs/typeorm"
 import {
-    Cat 
-} from "./cat.entity"
+    Cat
+} from "../../entities/postgresql/main"
 import {
     CatService 
 } from "./cat.service"

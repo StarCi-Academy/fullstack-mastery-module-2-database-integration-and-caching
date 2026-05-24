@@ -13,7 +13,7 @@ import {
 } from "typeorm"
 import {
     Cat, Toy
-} from "./entities"
+} from "../../entities/postgresql/main"
 
 /**
  * Cat Service — Xử lý logic nghiệp vụ cho mèo và các quan hệ.

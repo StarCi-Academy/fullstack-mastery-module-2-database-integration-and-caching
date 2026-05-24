@@ -22,11 +22,11 @@ import {
 } from "./dto"
 import {
     SqlComparisonItemEntity,
-} from "./entities"
+} from "../../entities/postgresql/main"
 import {
     NoSqlComparisonItem,
     NoSqlComparisonItemDocument,
-} from "./schemas"
+} from "../../schemas/mongodb/main"
 
 @Injectable()
 export class CompareService {

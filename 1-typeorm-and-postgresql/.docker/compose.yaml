@@ -15,6 +15,7 @@ services:
   # PostgreSQL — persistence cho bài học (TypeORM).
   # (EN: PostgreSQL — persistence for the lesson (TypeORM).)
   postgres:
+    container_name: 1-typeorm-and-postgresql-postgres
     image: postgres:16-alpine
     environment:
       POSTGRES_USER: postgres
@@ -26,10 +27,13 @@ services:
       - "5432:5432"
     volumes:
       - pg_data:/var/lib/postgresql/data
+    networks:
+      - 1-typeorm-and-postgresql-network
 
 volumes:
   pg_data:
 
 networks:
-  1-typeorm-and-postgresql:
-    name: 1-typeorm-and-postgresql
+  1-typeorm-and-postgresql-network:
+    name: 1-typeorm-and-postgresql-network
+    driver: bridge

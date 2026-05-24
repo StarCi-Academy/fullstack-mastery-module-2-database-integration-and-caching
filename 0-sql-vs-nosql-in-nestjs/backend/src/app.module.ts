@@ -25,8 +25,10 @@ import {
 } from "./app.service"
 import {
     CompareModule,
-    SqlComparisonItemEntity,
 } from "./modules"
+import {
+    SqlComparisonItemEntity,
+} from "./entities/postgresql/main"
 
 @Module({
     imports: [

@@ -21,8 +21,8 @@ import {
     DataSource, Repository 
 } from "typeorm"
 import {
-    Cat 
-} from "./cat.entity"
+    Cat
+} from "../../entities/postgresql/main"
 
 /**
  * Cat Service — Minh há»a 3 tầng caching (DB, Logic, Response).

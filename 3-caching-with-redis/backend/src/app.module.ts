@@ -31,8 +31,11 @@ import {
     AppController 
 } from "./app.controller"
 import {
-    CatModule, Cat 
+    CatModule,
 } from "./modules"
+import {
+    Cat,
+} from "./entities/postgresql/main"
 import {
     RequestTimingInterceptor 
 } from "./common"
