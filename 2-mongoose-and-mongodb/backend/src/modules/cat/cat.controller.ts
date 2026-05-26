@@ -9,8 +9,8 @@ import {
     CatService 
 } from "./cat.service"
 import {
-    Cat 
-} from "./schemas/cat.schema"
+    Cat
+} from "../../schemas/mongodb/main"
 
 /**
  * Cat Controller — REST API Endpoints cho mèo bằng MongoDB.
