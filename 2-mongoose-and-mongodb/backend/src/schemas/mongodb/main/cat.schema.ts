@@ -66,7 +66,7 @@ export class Cat {
   @Prop({
       type: Object
   })
-      metadata: Record<string, any>
+      metadata: Record<string, unknown>
 
   /**
    * Số lượt thích (dùng cho demo atomic `$inc`).
