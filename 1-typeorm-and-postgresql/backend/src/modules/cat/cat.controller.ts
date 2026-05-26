@@ -10,7 +10,7 @@ import {
 } from "./cat.service"
 import {
     Cat, Toy
-} from "./entities"
+} from "../../entities/postgresql/main"
 
 /**
  * Cat Controller — Điểm tiếp nhận request cho domain Cat.
