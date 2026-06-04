@@ -14,7 +14,7 @@ public class Toy {
     private String name;
 
     @ManyToOne
-    @JoinColumn(name = "cat_id")
+    @JoinColumn(name = "catId")
     @JsonIgnore
     private Cat cat;
 

@@ -1,7 +1,0 @@
-academy\starci\cachingredis\CachingRedisApplication.class
-academy\starci\cachingredis\entities\Cat.class
-academy\starci\cachingredis\services\CatService.class
-academy\starci\cachingredis\services\CatService$1.class
-academy\starci\cachingredis\services\CatService$2.class
-academy\starci\cachingredis\controllers\CatController.class
-academy\starci\cachingredis\repositories\CatRepository.class

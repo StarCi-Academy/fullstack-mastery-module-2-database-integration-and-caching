@@ -14,6 +14,10 @@ namespace cat_relations.Models
         [Column("name")]
         public string Name { get; set; } = string.Empty;
 
+        [Column("passportId")]
+        public int? PassportId { get; set; }
+
+        [ForeignKey("PassportId")]
         public CatPassport? Passport { get; set; }
 
         public List<Toy> Toys { get; set; } = new();

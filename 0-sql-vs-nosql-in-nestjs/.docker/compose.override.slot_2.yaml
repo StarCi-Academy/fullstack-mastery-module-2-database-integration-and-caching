@@ -1,0 +1,7 @@
+services:
+  postgres:
+    ports:
+      - "25432:5432"
+  mongodb:
+    ports:
+      - "27022:27017"

@@ -15,10 +15,6 @@ namespace cat_relations.Models
         [Column("passportNumber")]
         public string PassportNumber { get; set; } = string.Empty;
 
-        // Foreign Key to Cat (optional or required depending on configuration)
-        [Column("catId")]
-        public int? CatId { get; set; }
-
         [JsonIgnore]
         public Cat? Cat { get; set; }
     }

@@ -15,7 +15,7 @@ public class Cat {
     private String name;
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "passport_id")
+    @JoinColumn(name = "passportId")
     private CatPassport passport;
 
     @OneToMany(mappedBy = "cat", cascade = CascadeType.ALL, orphanRemoval = true)

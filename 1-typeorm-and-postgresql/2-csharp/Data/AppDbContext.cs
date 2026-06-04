@@ -20,7 +20,7 @@ namespace cat_relations.Data
             modelBuilder.Entity<Cat>()
                 .HasOne(c => c.Passport)
                 .WithOne(p => p.Cat)
-                .HasForeignKey<CatPassport>(p => p.CatId)
+                .HasForeignKey<Cat>(c => c.PassportId)
                 .OnDelete(DeleteBehavior.Cascade);
 
             // 1:N relationship between Cat and Toy

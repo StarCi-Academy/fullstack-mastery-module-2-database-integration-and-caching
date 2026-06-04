@@ -3,7 +3,8 @@ using MongoDB.Driver;
 var builder = WebApplication.CreateBuilder(args);
 
 // Port setup to 3000
-builder.WebHost.UseUrls("http://localhost:3000");
+var port = Environment.GetEnvironmentVariable("PORT") ?? "3000";
+builder.WebHost.UseUrls($"http://localhost:{port}");
 
 // Services configuration
 builder.Services.AddControllers();
