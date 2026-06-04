@@ -1,0 +1,6 @@
+academy\starci\mongoosemongodb\services\CatService.class
+academy\starci\mongoosemongodb\repositories\CatRepository.class
+academy\starci\mongoosemongodb\MongooseMongodbApplication.class
+academy\starci\mongoosemongodb\exceptions\NotFoundException.class
+academy\starci\mongoosemongodb\entities\Cat.class
+academy\starci\mongoosemongodb\controllers\CatController.class

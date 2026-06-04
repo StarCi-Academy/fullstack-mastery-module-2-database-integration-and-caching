@@ -1,0 +1,8 @@
+academy\starci\sqlvsnosql\services\CompareService.class
+academy\starci\sqlvsnosql\SqlVsNoSqlApplication.class
+academy\starci\sqlvsnosql\controllers\CompareController.class
+academy\starci\sqlvsnosql\entities\NoSqlComparisonItem.class
+academy\starci\sqlvsnosql\repositories\SqlComparisonRepository.class
+academy\starci\sqlvsnosql\entities\SqlComparisonItem.class
+academy\starci\sqlvsnosql\dto\CreateCompareDto.class
+academy\starci\sqlvsnosql\repositories\NoSqlComparisonRepository.class

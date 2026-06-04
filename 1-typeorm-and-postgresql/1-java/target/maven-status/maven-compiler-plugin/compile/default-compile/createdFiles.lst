@@ -1,0 +1,10 @@
+academy\starci\typeormpostgresql\CatApplication.class
+academy\starci\typeormpostgresql\repositories\ToyRepository.class
+academy\starci\typeormpostgresql\entities\Cat.class
+academy\starci\typeormpostgresql\entities\Toy.class
+academy\starci\typeormpostgresql\entities\CatPassport.class
+academy\starci\typeormpostgresql\entities\Owner.class
+academy\starci\typeormpostgresql\controllers\CatController.class
+academy\starci\typeormpostgresql\services\CatService.class
+academy\starci\typeormpostgresql\exceptions\NotFoundException.class
+academy\starci\typeormpostgresql\repositories\CatRepository.class
