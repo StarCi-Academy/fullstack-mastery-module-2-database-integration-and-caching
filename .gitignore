@@ -3,6 +3,24 @@ dist/
 node_modules/
 build/
 
+# Java build artifacts
+target/
+*.class
+*.jar
+*.war
+
+# C# / .NET build artifacts
+bin/
+obj/
+*.user
+*.suo
+*.DotSettings
+
+# Go build artifacts
+*.exe
+*.test
+*.out
+
 # Logs
 logs
 *.log

@@ -1,64 +1,91 @@
 /**
  * Business logic service for Cat.
+ * Implements three caching strategies demonstrated in the lesson:
+ *  - Layer 1 (DB): TypeORM query-result cache stored in Redis via ioredis.
+ *  - Layer 2 (Logic): Manual cache-aside with `CACHE_MANAGER` (cache-manager + Redis).
+ *  - Layer 3 (Response): HTTP response cache via `CacheInterceptor` at the controller.
  */
 import {
-    Injectable, Logger, Inject 
+    Injectable, Logger, Inject
 } from "@nestjs/common"
 import {
-    InjectRepository 
+    InjectRepository
 } from "@nestjs/typeorm"
 import {
-    CACHE_MANAGER 
+    CACHE_MANAGER
 } from "@nestjs/cache-manager"
 import type {
-    Cache 
+    Cache
 } from "cache-manager"
 import {
-    faker 
+    faker
 } from "@faker-js/faker"
 import {
-    DataSource, Repository 
+    DataSource, Repository
 } from "typeorm"
 import {
     Cat
 } from "../../entities/postgresql/main"
 
 /**
- * Cat Service — Demonstrates 3 caching layers: DB, Logic, Response.
+ * CatService — Demonstrates 3 caching layers: DB, Logic, Response.
+ * All three layers share the same Redis instance but use different
+ * client libraries: ioredis (TypeORM), cache-manager/keyv (logic+response).
  */
 @Injectable()
 export class CatService {
     private readonly logger = new Logger(CatService.name)
+
+    /** Cache key for the response-layer (CacheInterceptor) cache entry. */
     private readonly responseCacheKey = "cats_res_layer"
+    /** Cache key for the logic-layer (CACHE_MANAGER cache-aside) entry. */
     private readonly logicCacheKey = "cats_logic_layer_cache"
+    /** Cache key for the DB-layer (TypeORM query cache) entry. */
     private readonly dbQueryCacheKey = "cats_db_layer_cache"
 
+    /**
+     * Utility to simulate expensive computation or I/O during a cache MISS.
+     * The 1-second delay makes the MISS/HIT latency difference clearly
+     * visible in the terminal `[TIME]` log line.
+     * @param ms - Duration in milliseconds to sleep.
+     */
     private async sleep(ms: number): Promise<void> {
-        await new Promise((resolve) => setTimeout(resolve,
-            ms))
+        // Wrap setTimeout in a Promise so it is compatible with async/await
+        await new Promise((resolve) => setTimeout(resolve, ms))
     }
 
+    /**
+     * Type guard for the logic-cache result shape.
+     * Cache-manager returns `unknown` — narrowing prevents runtime errors
+     * when the cache holds an unexpected value (e.g. after a schema change).
+     * @param value - Raw value retrieved from the cache store.
+     * @returns `true` when the value matches `{ message: string; timestamp: string }`.
+     */
     private isLogicCacheResult(
         value: unknown,
     ): value is { message: string; timestamp: string } {
+        // Reject null and non-objects immediately
         if (typeof value !== "object" || value === null) {
             return false
         }
 
+        // Cast to a record so we can check individual string fields
         const candidate = value as Record<string, unknown>
         return (
             typeof candidate.message === "string" &&
-      typeof candidate.timestamp === "string"
+            typeof candidate.timestamp === "string"
         )
     }
 
     constructor(
-    @InjectRepository(Cat)
-    private readonly catRepository: Repository<Cat>,
-    private readonly dataSource: DataSource,
-    // Inject CACHE_MANAGER for manual programmatic caching
-    @Inject(CACHE_MANAGER)
-    private readonly cacheManager: Cache,
+        /** TypeORM repository for Cat — used in Layer 1 (DB cache). */
+        @InjectRepository(Cat)
+        private readonly catRepository: Repository<Cat>,
+        /** DataSource gives access to `queryResultCache` for manual invalidation. */
+        private readonly dataSource: DataSource,
+        /** Inject the shared CACHE_MANAGER for Layer 2 (logic) and Layer 3 (response) cache operations. */
+        @Inject(CACHE_MANAGER)
+        private readonly cacheManager: Cache,
     ) {}
 
     /**
