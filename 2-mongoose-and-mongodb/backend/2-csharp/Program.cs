@@ -4,7 +4,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Port setup to 3000
 var port = Environment.GetEnvironmentVariable("PORT") ?? "3000";
-builder.WebHost.UseUrls($"http://localhost:{port}");
+builder.WebHost.UseUrls($"http://127.0.0.1:{port}");
 
 // Services configuration
 builder.Services.AddControllers();

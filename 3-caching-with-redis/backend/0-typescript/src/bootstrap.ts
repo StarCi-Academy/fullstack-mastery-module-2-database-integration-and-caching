@@ -20,5 +20,5 @@ export async function bootstrap(): Promise<void> {
     // Port from env PORT or default 3000.
     const port = Number(process.env.PORT) || 3000
     await app.listen(port,
-        "0.0.0.0")
+        "127.0.0.1")
 }

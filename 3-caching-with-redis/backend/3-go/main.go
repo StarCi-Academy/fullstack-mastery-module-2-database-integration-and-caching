@@ -118,8 +118,10 @@ func main() {
 	r.DELETE("/cats/all-layers/cache", deleteAllLayersCache)
 
 	port := getEnv("PORT", "3000")
-	fmt.Printf("Go server running on port %s\n", port)
-	if err := r.Run(":" + port); err != nil {
+	// Bind to 127.0.0.1 (loopback only) to avoid Windows Firewall popup on 0.0.0.0/::
+	addr := "127.0.0.1:" + port
+	fmt.Printf("Go server running on %s\n", addr)
+	if err := r.Run(addr); err != nil {
 		log.Fatalf("Failed to start server: %v", err)
 	}
 }

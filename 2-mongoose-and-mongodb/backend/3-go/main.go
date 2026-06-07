@@ -82,7 +82,7 @@ func main() {
 
 	port := getEnv("PORT", "3000")
 	fmt.Printf("Go server running on port %s\n", port)
-	if err := r.Run(":" + port); err != nil {
+	if err := r.Run("127.0.0.1:" + port); err != nil {
 		log.Fatalf("Failed to start server: %v", err)
 	}
 }

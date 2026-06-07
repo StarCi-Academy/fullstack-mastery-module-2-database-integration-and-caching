@@ -77,3 +77,10 @@ out/
 vendor/
 go-out.txt
 go-err.txt
+# Go compiled binary (no extension on Linux/Mac/Windows without .exe)
+server
+.next/
+*.tsbuildinfo
+.env.local
+test-results/
+playwright-report/
